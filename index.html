@@ -347,8 +347,8 @@
             </label>
           </div>
 
-          <!-- Custom Caption Typography Controls -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-800/80">
+          <!-- Custom Caption Typography & Color Controls -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-800/80">
             <div>
               <label class="block text-[11px] text-slate-400 mb-1">Caption Font Family</label>
               <select id="caption_font_family" onchange="updateCaptionTypography()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
@@ -366,12 +366,19 @@
               </div>
               <input type="range" id="caption_size_slider" min="10" max="24" value="14" oninput="updateCaptionTypography()" class="w-full accent-indigo-500 cursor-pointer">
             </div>
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-1">Caption Text Color</label>
+              <div class="flex items-center space-x-2">
+                <input type="color" id="caption_color_picker" value="#ffffff" onchange="updateCaptionColor(this.value)" class="w-8 h-7 bg-slate-950 border border-slate-800 rounded cursor-pointer">
+                <span class="text-[10px] text-slate-400">Custom Tint</span>
+              </div>
+            </div>
           </div>
         </div>
 
       </section>
 
-      <!-- Step 4: Logo Watermark, Opacity & Typography -->
+      <!-- Step 4: Logo Watermark, Opacity, Color & Typography -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur space-y-4">
         <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
           <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">4</span>
@@ -405,11 +412,11 @@
           </select>
         </div>
 
-        <!-- Logo Customization (Opacity, Size, Font) -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-800/80">
+        <!-- Logo Customizations (Opacity, Size, Font Style, Color) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-slate-800/80">
           <div>
             <div class="flex items-center justify-between mb-1">
-              <label class="text-[11px] text-slate-400">Logo Opacity</label>
+              <label class="text-[11px] text-slate-400">Opacity</label>
               <span id="logo_opacity_val" class="text-[10px] text-indigo-400 font-mono">80%</span>
             </div>
             <input type="range" id="logo_opacity_slider" min="10" max="100" value="80" oninput="updateLogoCustomizations()" class="w-full accent-indigo-500 cursor-pointer">
@@ -422,14 +429,21 @@
             <input type="range" id="logo_size_slider" min="8" max="22" value="11" oninput="updateLogoCustomizations()" class="w-full accent-indigo-500 cursor-pointer">
           </div>
           <div>
-            <label class="block text-[11px] text-slate-400 mb-1">Logo Font Style</label>
+            <label class="block text-[11px] text-slate-400 mb-1">Text Font Style</label>
             <select id="logo_font_family" onchange="updateLogoCustomizations()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
-              <option value="Inter, sans-serif">Inter (Clean)</option>
+              <option value="Inter, sans-serif">Inter</option>
               <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
               <option value="'Montserrat', sans-serif">Montserrat</option>
               <option value="'Playfair Display', serif">Playfair Serif</option>
               <option value="'Roboto Mono', monospace">Roboto Mono</option>
             </select>
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-400 mb-1">Text Color</label>
+            <div class="flex items-center space-x-2">
+              <input type="color" id="logo_color_picker" value="#ffffff" onchange="updateLogoCustomizations()" class="w-8 h-7 bg-slate-950 border border-slate-800 rounded cursor-pointer">
+              <span class="text-[10px] text-slate-400">Tint</span>
+            </div>
           </div>
         </div>
       </section>
@@ -721,25 +735,26 @@
         box.classList.remove('hidden');
       }
 
-      // Preserve existing font size and family settings
       const currentSize = document.getElementById('caption_size_slider').value;
       const currentFont = document.getElementById('caption_font_family').value;
+      const customColor = document.getElementById('caption_color_picker').value;
 
       txt.className = "drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] ";
       txt.style.fontSize = currentSize + 'px';
       txt.style.fontFamily = currentFont;
+      txt.style.color = customColor;
 
       switch(styleKey) {
-        case 'bold-shadow': txt.className += "font-bold text-white tracking-wide"; break;
-        case 'bold-highlight': txt.className += "font-bold text-yellow-300 tracking-wide"; break;
-        case 'plain-white': txt.className += "font-normal text-slate-100"; break;
-        case 'hormozi': txt.className += "font-black text-emerald-400 uppercase tracking-wider"; break;
-        case 'neon': txt.className += "font-black text-cyan-300 tracking-wider"; break;
-        case 'pastel': txt.className += "font-bold text-pink-400 tracking-wide"; break;
-        case 'yellow': txt.className += "font-extrabold text-amber-400 tracking-wide"; break;
-        case 'underline': txt.className += "font-semibold text-slate-200 underline decoration-indigo-500 decoration-2"; break;
-        case 'minimal': txt.className += "font-black text-rose-300 uppercase tracking-widest"; break;
-        case 'cinematic': txt.className += "font-light italic text-slate-100 tracking-wide"; break;
+        case 'bold-shadow': txt.className += "font-bold tracking-wide"; break;
+        case 'bold-highlight': txt.className += "font-bold tracking-wide"; break;
+        case 'plain-white': txt.className += "font-normal"; break;
+        case 'hormozi': txt.className += "font-black uppercase tracking-wider"; break;
+        case 'neon': txt.className += "font-black tracking-wider"; break;
+        case 'pastel': txt.className += "font-bold tracking-wide"; break;
+        case 'yellow': txt.className += "font-extrabold tracking-wide"; break;
+        case 'underline': txt.className += "font-semibold underline decoration-indigo-500 decoration-2"; break;
+        case 'minimal': txt.className += "font-black uppercase tracking-widest"; break;
+        case 'cinematic': txt.className += "font-light italic tracking-wide"; break;
       }
     }
 
@@ -754,7 +769,12 @@
       captionTxt.style.fontSize = size + 'px';
     }
 
-    // Logo Handling & Customizations (Opacity, Size, Font)
+    function updateCaptionColor(colorHex) {
+      const captionTxt = document.getElementById('preview_caption_text');
+      captionTxt.style.color = colorHex;
+    }
+
+    // Logo Handling & Customizations (Opacity, Size, Font Style, Color)
     function updateLogoContent() {
       const textVal = document.getElementById('logo_text_input').value;
       logoContentText = textVal ? textVal : 'Logo';
@@ -773,6 +793,7 @@
       const opacity = document.getElementById('logo_opacity_slider').value;
       const size = document.getElementById('logo_size_slider').value;
       const font = document.getElementById('logo_font_family').value;
+      const color = document.getElementById('logo_color_picker').value;
 
       document.getElementById('logo_opacity_val').innerText = opacity + '%';
       document.getElementById('logo_size_val').innerText = size + 'px';
@@ -784,6 +805,7 @@
       if (displayElem) {
         displayElem.style.fontSize = size + 'px';
         displayElem.style.fontFamily = font;
+        displayElem.style.color = color;
 
         const img = displayElem.querySelector('img');
         if (img) {
@@ -797,9 +819,11 @@
       const displayElem = document.getElementById('preview_logo_display');
       const size = document.getElementById('logo_size_slider').value;
       const font = document.getElementById('logo_font_family').value;
+      const color = document.getElementById('logo_color_picker').value;
 
       displayElem.style.fontSize = size + 'px';
       displayElem.style.fontFamily = font;
+      displayElem.style.color = color;
 
       if (logoImageSrc) {
         const imgSize = parseInt(size) * 1.8;
@@ -813,7 +837,7 @@
     function updateLogoPlacement(option) {
       const container = document.getElementById('preview_logo_container');
       container.className = "absolute z-25 pointer-events-none transition-all duration-200 ";
-      container.innerHTML = `<span id="preview_logo_display" class="font-bold text-white/90 bg-black/50 px-1.5 py-0.5 rounded backdrop-blur-sm shadow">${logoImageSrc ? `<img src="${logoImageSrc}" class="inline-block object-contain" />` : logoContentText}</span>`;
+      container.innerHTML = `<span id="preview_logo_display" class="font-bold bg-black/50 px-1.5 py-0.5 rounded backdrop-blur-sm shadow">${logoImageSrc ? `<img src="${logoImageSrc}" class="inline-block object-contain" />` : logoContentText}</span>`;
 
       switch(option) {
         case '1': container.className += "top-3 right-3"; break;
@@ -825,15 +849,15 @@
         case '7': container.className += "bottom-12 left-1/2 -translate-x-1/2"; break;
         case '8': 
           container.className += "top-4 left-0 w-full text-center overflow-hidden";
-          container.innerHTML = `<div class="animate-marquee whitespace-nowrap"><span id="preview_logo_display" class="font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
+          container.innerHTML = `<div class="animate-marquee whitespace-nowrap"><span id="preview_logo_display" class="font-bold bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
           break;
         case '9': 
           container.className += "bottom-12 left-0 w-full text-center overflow-hidden";
-          container.innerHTML = `<div class="animate-marquee whitespace-nowrap" style="animation-duration: 9s;"><span id="preview_logo_display" class="font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
+          container.innerHTML = `<div class="animate-marquee whitespace-nowrap" style="animation-duration: 9s;"><span id="preview_logo_display" class="font-bold bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
           break;
         case '10': 
           container.className += "top-1/2 left-0 w-full text-center overflow-hidden -translate-y-1/2";
-          container.innerHTML = `<div class="animate-marquee whitespace-nowrap" style="animation-duration: 7s;"><span id="preview_logo_display" class="font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
+          container.innerHTML = `<div class="animate-marquee whitespace-nowrap" style="animation-duration: 7s;"><span id="preview_logo_display" class="font-bold bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
           break;
       }
       renderLogoVisual();
