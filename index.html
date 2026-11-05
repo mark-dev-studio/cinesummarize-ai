@@ -6,6 +6,8 @@
   <title>CineSummarize AI - Smart Video Editor & Summarizer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts for Captions & Logos -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&family=Montserrat:wght@400;800;900&family=Playfair+Display:ital,wght@0,700;1,400&family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
   <style>
     .bg-grid {
       background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
@@ -163,7 +165,7 @@
           </div>
         </div>
 
-        <!-- Summary Length (with Custom Input Option) -->
+        <!-- Summary Length -->
         <div>
           <label class="block text-xs font-medium text-slate-300 mb-2">Summary Length</label>
           <div class="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-2">
@@ -273,10 +275,10 @@
           </div>
         </div>
 
-        <!-- 11 Caption Styles (Including 'None') -->
+        <!-- 11 Caption Styles -->
         <div>
-          <label class="block text-xs font-medium text-slate-300 mb-2">Caption Style (2–3 Words per Line - 11 Options)</label>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <label class="block text-xs font-medium text-slate-300 mb-2">Caption Style Preset (11 Options)</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
             <label class="cursor-pointer">
               <input type="radio" name="caption_style" value="bold-shadow" checked onchange="updateCaptionStyle('bold-shadow')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
@@ -344,15 +346,36 @@
               </div>
             </label>
           </div>
+
+          <!-- Custom Caption Typography Controls -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-800/80">
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-1">Caption Font Family</label>
+              <select id="caption_font_family" onchange="updateCaptionTypography()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                <option value="Inter, sans-serif">Inter (Modern Sans)</option>
+                <option value="'Bebas Neue', sans-serif">Bebas Neue (Condensed Bold)</option>
+                <option value="'Montserrat', sans-serif">Montserrat (Heavy Punchy)</option>
+                <option value="'Playfair Display', serif">Playfair (Cinematic Serif)</option>
+                <option value="'Roboto Mono', monospace">Roboto Mono (Tech / Code)</option>
+              </select>
+            </div>
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-[11px] text-slate-400">Caption Font Size</label>
+                <span id="caption_size_val" class="text-[10px] text-indigo-400 font-mono">14px</span>
+              </div>
+              <input type="range" id="caption_size_slider" min="10" max="24" value="14" oninput="updateCaptionTypography()" class="w-full accent-indigo-500 cursor-pointer">
+            </div>
+          </div>
         </div>
 
       </section>
 
-      <!-- Logo Branding & Placement (10 Options) -->
+      <!-- Step 4: Logo Watermark, Opacity & Typography -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur space-y-4">
         <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
           <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">4</span>
-          Logo Watermark & Placement
+          Logo Watermark & Styling
         </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -380,6 +403,34 @@
             <option value="9">9. Moving slowly side by side in lower area</option>
             <option value="10">10. Moving slowly side by side in middle area</option>
           </select>
+        </div>
+
+        <!-- Logo Customization (Opacity, Size, Font) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-800/80">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-[11px] text-slate-400">Logo Opacity</label>
+              <span id="logo_opacity_val" class="text-[10px] text-indigo-400 font-mono">80%</span>
+            </div>
+            <input type="range" id="logo_opacity_slider" min="10" max="100" value="80" oninput="updateLogoCustomizations()" class="w-full accent-indigo-500 cursor-pointer">
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-[11px] text-slate-400">Logo Size</label>
+              <span id="logo_size_val" class="text-[10px] text-indigo-400 font-mono">11px</span>
+            </div>
+            <input type="range" id="logo_size_slider" min="8" max="22" value="11" oninput="updateLogoCustomizations()" class="w-full accent-indigo-500 cursor-pointer">
+          </div>
+          <div>
+            <label class="block text-[11px] text-slate-400 mb-1">Logo Font Style</label>
+            <select id="logo_font_family" onchange="updateLogoCustomizations()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+              <option value="Inter, sans-serif">Inter (Clean)</option>
+              <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
+              <option value="'Montserrat', sans-serif">Montserrat</option>
+              <option value="'Playfair Display', serif">Playfair Serif</option>
+              <option value="'Roboto Mono', monospace">Roboto Mono</option>
+            </select>
+          </div>
         </div>
       </section>
 
@@ -490,9 +541,9 @@
         <!-- Dynamic Aspect Ratio Container -->
         <div id="preview_player_frame" class="relative w-full aspect-[9/16] max-w-[260px] bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex flex-col items-center justify-between p-4 shadow-2xl transition-all duration-300">
           
-          <!-- Logo Watermark Element -->
-          <div id="preview_logo_container" class="absolute z-20 pointer-events-none transition-all duration-200 top-3 right-3">
-            <span id="preview_logo_display" class="text-[10px] font-bold text-white/80 bg-black/40 px-1.5 py-0.5 rounded backdrop-blur-sm">Logo</span>
+          <!-- Dynamic Logo Watermark Element -->
+          <div id="preview_logo_container" class="absolute z-20 pointer-events-none transition-all duration-200 top-3 right-3 opacity-80">
+            <span id="preview_logo_display" class="text-[11px] font-bold text-white/90 bg-black/40 px-1.5 py-0.5 rounded backdrop-blur-sm shadow">Logo</span>
           </div>
 
           <!-- Simulated Video / Uploaded Media Canvas -->
@@ -513,7 +564,7 @@
 
           <!-- Dynamic Caption Overlay Mockup -->
           <div id="preview_caption_box" class="relative z-10 mt-auto px-3 py-1.5 text-center transition-all duration-200">
-            <span id="preview_caption_text" class="text-xs font-bold text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] uppercase tracking-wide">FUTURE OF AI</span>
+            <span id="preview_caption_text" class="text-[14px] font-bold text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] uppercase tracking-wide">FUTURE OF AI</span>
           </div>
 
         </div>
@@ -670,7 +721,13 @@
         box.classList.remove('hidden');
       }
 
-      txt.className = "text-xs drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] ";
+      // Preserve existing font size and family settings
+      const currentSize = document.getElementById('caption_size_slider').value;
+      const currentFont = document.getElementById('caption_font_family').value;
+
+      txt.className = "drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] ";
+      txt.style.fontSize = currentSize + 'px';
+      txt.style.fontFamily = currentFont;
 
       switch(styleKey) {
         case 'bold-shadow': txt.className += "font-bold text-white tracking-wide"; break;
@@ -686,7 +743,18 @@
       }
     }
 
-    // Logo Handling & 10 Placements
+    function updateCaptionTypography() {
+      const font = document.getElementById('caption_font_family').value;
+      const size = document.getElementById('caption_size_slider').value;
+      
+      document.getElementById('caption_size_val').innerText = size + 'px';
+      
+      const captionTxt = document.getElementById('preview_caption_text');
+      captionTxt.style.fontFamily = font;
+      captionTxt.style.fontSize = size + 'px';
+    }
+
+    // Logo Handling & Customizations (Opacity, Size, Font)
     function updateLogoContent() {
       const textVal = document.getElementById('logo_text_input').value;
       logoContentText = textVal ? textVal : 'Logo';
@@ -701,41 +769,74 @@
       }
     }
 
+    function updateLogoCustomizations() {
+      const opacity = document.getElementById('logo_opacity_slider').value;
+      const size = document.getElementById('logo_size_slider').value;
+      const font = document.getElementById('logo_font_family').value;
+
+      document.getElementById('logo_opacity_val').innerText = opacity + '%';
+      document.getElementById('logo_size_val').innerText = size + 'px';
+
+      const container = document.getElementById('preview_logo_container');
+      container.style.opacity = opacity / 100;
+
+      const displayElem = document.getElementById('preview_logo_display');
+      if (displayElem) {
+        displayElem.style.fontSize = size + 'px';
+        displayElem.style.fontFamily = font;
+
+        const img = displayElem.querySelector('img');
+        if (img) {
+          img.style.width = (parseInt(size) * 1.8) + 'px';
+          img.style.height = (parseInt(size) * 1.8) + 'px';
+        }
+      }
+    }
+
     function renderLogoVisual() {
       const displayElem = document.getElementById('preview_logo_display');
+      const size = document.getElementById('logo_size_slider').value;
+      const font = document.getElementById('logo_font_family').value;
+
+      displayElem.style.fontSize = size + 'px';
+      displayElem.style.fontFamily = font;
+
       if (logoImageSrc) {
-        displayElem.innerHTML = `<img src="${logoImageSrc}" class="w-6 h-6 object-contain rounded inline-block" />`;
+        const imgSize = parseInt(size) * 1.8;
+        displayElem.innerHTML = `<img src="${logoImageSrc}" style="width:${imgSize}px; height:${imgSize}px;" class="object-contain inline-block rounded" />`;
       } else {
         displayElem.innerText = logoContentText;
       }
+      updateLogoCustomizations();
     }
 
     function updateLogoPlacement(option) {
       const container = document.getElementById('preview_logo_container');
       container.className = "absolute z-25 pointer-events-none transition-all duration-200 ";
-      container.innerHTML = `<span id="preview_logo_display" class="text-[10px] font-bold text-white/90 bg-black/50 px-1.5 py-0.5 rounded backdrop-blur-sm shadow">${logoImageSrc ? `<img src="${logoImageSrc}" class="w-5 h-5 object-contain inline-block" />` : logoContentText}</span>`;
+      container.innerHTML = `<span id="preview_logo_display" class="font-bold text-white/90 bg-black/50 px-1.5 py-0.5 rounded backdrop-blur-sm shadow">${logoImageSrc ? `<img src="${logoImageSrc}" class="inline-block object-contain" />` : logoContentText}</span>`;
 
       switch(option) {
-        case '1': container.className += "top-3 right-3"; break; // Upper Right
-        case '2': container.className += "bottom-12 right-3"; break; // Lower Right
-        case '3': container.className += "top-3 left-3"; break; // Upper Left
-        case '4': container.className += "bottom-12 left-3"; break; // Lower Left
-        case '5': container.className += "top-3 left-1/2 -translate-x-1/2"; break; // Upper Center
-        case '6': container.className += "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"; break; // Middle Center
-        case '7': container.className += "bottom-12 left-1/2 -translate-x-1/2"; break; // Lower Center
+        case '1': container.className += "top-3 right-3"; break;
+        case '2': container.className += "bottom-12 right-3"; break;
+        case '3': container.className += "top-3 left-3"; break;
+        case '4': container.className += "bottom-12 left-3"; break;
+        case '5': container.className += "top-3 left-1/2 -translate-x-1/2"; break;
+        case '6': container.className += "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"; break;
+        case '7': container.className += "bottom-12 left-1/2 -translate-x-1/2"; break;
         case '8': 
           container.className += "top-4 left-0 w-full text-center overflow-hidden";
-          container.innerHTML = `<div class="animate-marquee whitespace-nowrap"><span class="text-[10px] font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
+          container.innerHTML = `<div class="animate-marquee whitespace-nowrap"><span id="preview_logo_display" class="font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
           break;
         case '9': 
           container.className += "bottom-12 left-0 w-full text-center overflow-hidden";
-          container.innerHTML = `<div class="animate-marquee whitespace-nowrap" style="animation-duration: 9s;"><span class="text-[10px] font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
+          container.innerHTML = `<div class="animate-marquee whitespace-nowrap" style="animation-duration: 9s;"><span id="preview_logo_display" class="font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
           break;
         case '10': 
           container.className += "top-1/2 left-0 w-full text-center overflow-hidden -translate-y-1/2";
-          container.innerHTML = `<div class="animate-marquee whitespace-nowrap" style="animation-duration: 7s;"><span class="text-[10px] font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
+          container.innerHTML = `<div class="animate-marquee whitespace-nowrap" style="animation-duration: 7s;"><span id="preview_logo_display" class="font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
           break;
       }
+      renderLogoVisual();
     }
 
     function updateGraphicTags() {
@@ -772,6 +873,7 @@
     window.onload = function() {
       updateGraphicTags();
       renderLogoVisual();
+      updateCaptionTypography();
     };
   </script>
 
