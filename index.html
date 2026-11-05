@@ -85,7 +85,7 @@
         </div>
       </section>
 
-      <!-- Step 2 (NEW): Reference Video "Ingredients" (Style Transfer) -->
+      <!-- Step 2: Reference Video "Ingredients" (Style Transfer) -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur space-y-4">
         <div class="flex items-center justify-between">
           <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
@@ -149,37 +149,77 @@
         </div>
       </section>
 
-      <!-- Step 3: Edit Style & Workflow -->
-      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
-        <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center">
+      <!-- Step 3: Choose Edit Style (Categorized into Editing Techniques & Content Styles) -->
+      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur space-y-6">
+        <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
           <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">3</span>
-          Choose Edit Style
+          Choose Edit Style & Category
         </h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-          <button onclick="setEditStyle('⚡ Summarize', 'Key Takeaways')" class="edit-style-btn p-3 border border-indigo-500 bg-indigo-500/10 text-left rounded-xl hover:border-indigo-400">
-            <div class="font-medium text-sm text-indigo-300">⚡ Summarize</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Key takeaways & high points</div>
-          </button>
-          <button onclick="setEditStyle('✨ Motion Graphics', 'Visual Callouts')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
-            <div class="font-medium text-sm text-slate-200">✨ Motion Graphics</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Dynamic visual callouts</div>
-          </button>
-          <button onclick="setEditStyle('🎞️ Montage', 'Beat Sync Cut')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
-            <div class="font-medium text-sm text-slate-200">🎞️ Montage</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Fast beats & music cuts</div>
-          </button>
-          <button onclick="setEditStyle('🎬 Cinematic', 'Narrative Arc')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
-            <div class="font-medium text-sm text-slate-200">🎬 Cinematic</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Narrative arc & grading</div>
-          </button>
-          <button onclick="setEditStyle('🚀 Speed-Ramp', 'Speed Zooming')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
-            <div class="font-medium text-sm text-slate-200">🚀 Speed-Ramp</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Velocity & fast zooms</div>
-          </button>
-          <button onclick="setEditStyle('🗣️ Talking Head', 'Auto Framing')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
-            <div class="font-medium text-sm text-slate-200">🗣️ Talking Head</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Auto B-roll & framing</div>
-          </button>
+
+        <!-- Category 1: Editing Techniques -->
+        <div class="space-y-3">
+          <h3 class="text-xs font-bold text-indigo-300 uppercase tracking-wider flex items-center">
+            <i class="fa-solid fa-sliders mr-2"></i>1. Editing Techniques
+          </h3>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <button onclick="setEditStyle('⚡ Summarize', 'Key Takeaways')" class="edit-style-btn p-3 border border-indigo-500 bg-indigo-500/10 text-left rounded-xl hover:border-indigo-400">
+              <div class="font-medium text-sm text-indigo-300">⚡ Summarize</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Key takeaways & high points</div>
+            </button>
+            <button onclick="setEditStyle('✨ Motion Graphics', 'Visual Callouts')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+              <div class="font-medium text-sm text-slate-200">✨ Motion Graphics</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Dynamic visual callouts</div>
+            </button>
+            <button onclick="setEditStyle('🎞️ Montage', 'Beat Sync Cut')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+              <div class="font-medium text-sm text-slate-200">🎞️ Montage</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Fast beats & music cuts</div>
+            </button>
+            <button onclick="setEditStyle('🎬 Cinematic', 'Narrative Arc')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+              <div class="font-medium text-sm text-slate-200">🎬 Cinematic</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Narrative arc & grading</div>
+            </button>
+            <button onclick="setEditStyle('🚀 Speed-Ramp', 'Speed Zooming')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+              <div class="font-medium text-sm text-slate-200">🚀 Speed-Ramp</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Velocity & fast zooms</div>
+            </button>
+            <button onclick="setEditStyle('🗣️ Talking Head', 'Auto Framing')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+              <div class="font-medium text-sm text-slate-200">🗣️ Talking Head</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Auto B-roll & framing</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category 2: Content Styles -->
+        <div class="space-y-3 pt-3 border-t border-slate-800/80">
+          <h3 class="text-xs font-bold text-purple-300 uppercase tracking-wider flex items-center">
+            <i class="fa-solid fa-photo-film mr-2"></i>2. Content Styles
+          </h3>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <button onclick="setEditStyle('📱 UGC Ad', 'User Generated Content')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+              <div class="font-medium text-sm text-slate-200">📱 UGC Ad</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Authentic user review flow</div>
+            </button>
+            <button onclick="setEditStyle('🔥 Viral Hook Intro', 'Hooking Viewers')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+              <div class="font-medium text-sm text-slate-200">🔥 Viral Hook Intro</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">High-retention opening 3s</div>
+            </button>
+            <button onclick="setEditStyle('📖 Storytelling', 'Narrative Flow')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+              <div class="font-medium text-sm text-slate-200">📖 Storytelling</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Engaging pacing & arc</div>
+            </button>
+            <button onclick="setEditStyle('🎯 Promotional Ad', 'Call To Action')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+              <div class="font-medium text-sm text-slate-200">🎯 Promotional Ad</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Conversion-focused cuts</div>
+            </button>
+            <button onclick="setEditStyle('🎙️ Podcast Clips', 'Multi-Speaker Highlight')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+              <div class="font-medium text-sm text-slate-200">🎙️ Podcast Clips</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Dynamic speaker switching</div>
+            </button>
+            <button onclick="setEditStyle('⚡ Short-Form Content', 'Reels / TikTok')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+              <div class="font-medium text-sm text-slate-200">⚡ Short-Form Content</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Snappy vertical edits</div>
+            </button>
+          </div>
         </div>
       </section>
 
