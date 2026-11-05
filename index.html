@@ -11,12 +11,21 @@
       background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
       background-size: 24px 24px;
     }
+    @keyframes moveHorizontal {
+      0% { transform: translateX(-50%); }
+      50% { transform: translateX(50%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: inline-block;
+      animation: moveHorizontal 6s ease-in-out infinite;
+    }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans bg-grid antialiased">
+<body class="bg-slate-950 text-slate-100 h-screen overflow-hidden flex flex-col font-sans bg-grid antialiased">
 
   <!-- Header / Navigation -->
-  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 flex-none">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <div class="bg-gradient-to-tr from-indigo-500 to-purple-500 p-2 rounded-xl text-white">
@@ -37,11 +46,11 @@
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+  <!-- Main Container with Split Independent Scrolling -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 overflow-hidden">
 
-    <!-- Left Controls Panel -->
-    <div class="lg:col-span-7 space-y-6">
+    <!-- Left Controls Panel (Independent Scrolling) -->
+    <div class="lg:col-span-7 space-y-6 overflow-y-auto pr-2 h-[calc(100vh-100px)] pb-12">
 
       <!-- Step 1: Media Input Source -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
@@ -154,40 +163,43 @@
           </div>
         </div>
 
-        <!-- Summary Length -->
+        <!-- Summary Length (with Custom Input Option) -->
         <div>
           <label class="block text-xs font-medium text-slate-300 mb-2">Summary Length</label>
-          <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
+          <div class="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-2">
             <label class="cursor-pointer">
-              <input type="radio" name="summary_length" value="15 Sec" checked onchange="updateLength(this.value)" class="peer hidden">
+              <input type="radio" name="summary_length" value="15 Sec" checked onchange="updateLength('15 Sec')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700 text-xs font-semibold">
                 15 Sec
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="summary_length" value="30 Sec" onchange="updateLength(this.value)" class="peer hidden">
+              <input type="radio" name="summary_length" value="30 Sec" onchange="updateLength('30 Sec')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700 text-xs font-semibold">
                 30 Sec
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="summary_length" value="1 Min" onchange="updateLength(this.value)" class="peer hidden">
+              <input type="radio" name="summary_length" value="1 Min" onchange="updateLength('1 Min')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700 text-xs font-semibold">
                 1 Min
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="summary_length" value="3 Min" onchange="updateLength(this.value)" class="peer hidden">
+              <input type="radio" name="summary_length" value="3 Min" onchange="updateLength('3 Min')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700 text-xs font-semibold">
                 3 Min
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="summary_length" value="Custom" onchange="updateLength(this.value)" class="peer hidden">
+              <input type="radio" name="summary_length" value="Custom" onchange="updateLength('Custom')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700 text-xs font-semibold">
                 Custom
               </div>
             </label>
+          </div>
+          <div id="custom_length_container" class="hidden mt-2">
+            <input type="text" id="custom_length_input" oninput="updateCustomLength(this.value)" placeholder="e.g. 45 seconds, 2 minutes..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-indigo-500 text-slate-200">
           </div>
         </div>
 
@@ -261,78 +273,74 @@
           </div>
         </div>
 
-        <!-- 10 Caption Styles -->
+        <!-- 11 Caption Styles (Including 'None') -->
         <div>
-          <label class="block text-xs font-medium text-slate-300 mb-2">Caption Style (2–3 Words per Line - 10 Options)</label>
-          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+          <label class="block text-xs font-medium text-slate-300 mb-2">Caption Style (2–3 Words per Line - 11 Options)</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
             <label class="cursor-pointer">
               <input type="radio" name="caption_style" value="bold-shadow" checked onchange="updateCaptionStyle('bold-shadow')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-[11px] font-bold text-white shadow-md">White Bold + Shadow</div>
-                <div class="text-[9px] text-slate-500 mt-0.5">Dark background shadow</div>
+                <div class="text-[11px] font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">White Bold + Shadow</div>
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="caption_style" value="bold-highlight" onchange="updateCaptionStyle('bold-highlight')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-[11px] font-bold text-yellow-300 drop-shadow">White Bold + Highlight</div>
-                <div class="text-[9px] text-slate-500 mt-0.5">White with yellow pop</div>
+                <div class="text-[11px] font-bold text-yellow-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">White Bold + Highlight</div>
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="caption_style" value="plain-white" onchange="updateCaptionStyle('plain-white')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-[11px] font-normal text-slate-200">Plain White</div>
-                <div class="text-[9px] text-slate-500 mt-0.5">Clean regular font</div>
+                <div class="text-[11px] font-normal text-slate-200 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Plain White</div>
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="caption_style" value="hormozi" onchange="updateCaptionStyle('hormozi')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-[11px] font-black text-emerald-400 uppercase">Hormozi Pop</div>
-                <div class="text-[9px] text-slate-500 mt-0.5">Green/Yellow bounce</div>
+                <div class="text-[11px] font-black text-emerald-400 uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Hormozi Pop</div>
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="caption_style" value="neon" onchange="updateCaptionStyle('neon')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-[11px] font-black text-cyan-300">Neon Glow</div>
-                <div class="text-[9px] text-slate-500 mt-0.5">High contrast outline</div>
+                <div class="text-[11px] font-black text-cyan-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Neon Glow</div>
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="caption_style" value="pastel" onchange="updateCaptionStyle('pastel')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-[11px] font-bold text-pink-400 bg-slate-900 px-1 rounded">Pastel Pill</div>
-                <div class="text-[9px] text-slate-500 mt-0.5">Dark pill background</div>
+                <div class="text-[11px] font-bold text-pink-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Pastel Glow</div>
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="caption_style" value="yellow" onchange="updateCaptionStyle('yellow')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-[11px] font-extrabold text-amber-400">Bold Yellow</div>
-                <div class="text-[9px] text-slate-500 mt-0.5">Classic high visibility</div>
+                <div class="text-[11px] font-extrabold text-amber-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Bold Yellow</div>
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="caption_style" value="underline" onchange="updateCaptionStyle('underline')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-[11px] font-semibold text-slate-300 underline decoration-indigo-500">Underline Pop</div>
-                <div class="text-[9px] text-slate-500 mt-0.5">Active word underline</div>
+                <div class="text-[11px] font-semibold text-slate-200 underline decoration-indigo-500 decoration-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Underline Pop</div>
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="caption_style" value="minimal" onchange="updateCaptionStyle('minimal')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-[11px] font-black text-rose-400 uppercase tracking-widest">Minimal Box</div>
-                <div class="text-[9px] text-slate-500 mt-0.5">Semi-transparent box</div>
+                <div class="text-[11px] font-black text-rose-300 uppercase tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Minimal Glow</div>
               </div>
             </label>
             <label class="cursor-pointer">
               <input type="radio" name="caption_style" value="cinematic" onchange="updateCaptionStyle('cinematic')" class="peer hidden">
               <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-[11px] font-light text-slate-100 italic">Cinematic Subtle</div>
-                <div class="text-[9px] text-slate-500 mt-0.5">Bottom centered serif</div>
+                <div class="text-[11px] font-light text-slate-100 italic drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">Cinematic Subtle</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" value="none" onchange="updateCaptionStyle('none')" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-[11px] font-medium text-slate-400">🚫 None (No Captions)</div>
               </div>
             </label>
           </div>
@@ -340,17 +348,52 @@
 
       </section>
 
-      <!-- Step 4: AI Effects & Overlay Library -->
+      <!-- Logo Branding & Placement (10 Options) -->
+      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur space-y-4">
+        <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
+          <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">4</span>
+          Logo Watermark & Placement
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-slate-300 mb-1">Logo Text</label>
+            <input type="text" id="logo_text_input" oninput="updateLogoContent()" placeholder="e.g. @BrandName" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs text-slate-300 mb-1">Or Upload Logo Image</label>
+            <input type="file" id="logo_file_input" accept="image/*" onchange="handleLogoUpload(event)" class="w-full text-[10px] text-slate-400 border border-slate-800 rounded-xl px-2 py-1.5 bg-slate-950 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-2">Logo Placement Option (10 Styles)</label>
+          <select id="logo_placement_select" onchange="updateLogoPlacement(this.value)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+            <option value="1">1. Upper Right (Static)</option>
+            <option value="2">2. Lower Right (Static)</option>
+            <option value="3">3. Upper Left (Static)</option>
+            <option value="4">4. Lower Left (Static)</option>
+            <option value="5">5. Upper Center (Static)</option>
+            <option value="6">6. Middle Center (Static)</option>
+            <option value="7">7. Lower Center (Static)</option>
+            <option value="8">8. Moving side by side in upper area</option>
+            <option value="9">9. Moving slowly side by side in lower area</option>
+            <option value="10">10. Moving slowly side by side in middle area</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Step 5: AI Effects & Overlay Library -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
-            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">4</span>
+            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">5</span>
             Select Graphic Effects & Overlays
           </h2>
           <button onclick="selectAllOverlays()" class="text-xs text-indigo-400 hover:underline">Select All AI Recommended</button>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-56 overflow-y-auto pr-1">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-48 overflow-y-auto pr-1">
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
             <input type="checkbox" value="Doc-Title" onchange="updateGraphicTags()" checked class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">📄 Doc-Title</span>
@@ -430,8 +473,8 @@
 
     </div>
 
-    <!-- Right Live Preview & Export Panel -->
-    <div class="lg:col-span-5 space-y-6">
+    <!-- Right Live Preview & Export Panel (Sticky / Unaffected by scroll) -->
+    <div class="lg:col-span-5 space-y-6 overflow-y-auto h-[calc(100vh-100px)] pr-2">
 
       <!-- Live Interactive Video Preview Player -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur flex flex-col items-center">
@@ -445,8 +488,13 @@
         </div>
 
         <!-- Dynamic Aspect Ratio Container -->
-        <div id="preview_player_frame" class="relative w-full aspect-[9/16] max-w-[280px] bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex flex-col items-center justify-between p-4 shadow-2xl transition-all duration-300">
+        <div id="preview_player_frame" class="relative w-full aspect-[9/16] max-w-[260px] bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex flex-col items-center justify-between p-4 shadow-2xl transition-all duration-300">
           
+          <!-- Logo Watermark Element -->
+          <div id="preview_logo_container" class="absolute z-20 pointer-events-none transition-all duration-200 top-3 right-3">
+            <span id="preview_logo_display" class="text-[10px] font-bold text-white/80 bg-black/40 px-1.5 py-0.5 rounded backdrop-blur-sm">Logo</span>
+          </div>
+
           <!-- Simulated Video / Uploaded Media Canvas -->
           <video id="preview_video_element" class="absolute inset-0 w-full h-full object-cover hidden" loop muted playsinline></video>
           
@@ -463,9 +511,9 @@
             <!-- Overlays injected dynamically -->
           </div>
 
-          <!-- Dynamic Caption Overlay Mockup (2-3 Words) -->
-          <div id="preview_caption_box" class="relative z-10 mt-auto px-3 py-1.5 rounded-lg text-center transition-all duration-200">
-            <span id="preview_caption_text" class="text-xs font-black text-white drop-shadow-md">FUTURE OF AI</span>
+          <!-- Dynamic Caption Overlay Mockup -->
+          <div id="preview_caption_box" class="relative z-10 mt-auto px-3 py-1.5 text-center transition-all duration-200">
+            <span id="preview_caption_text" class="text-xs font-bold text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] uppercase tracking-wide">FUTURE OF AI</span>
           </div>
 
         </div>
@@ -516,13 +564,14 @@
 
   </main>
 
-  <!-- Interactive JavaScript Engine for Live Preview -->
+  <!-- Interactive JavaScript Engine -->
   <script>
     let currentLength = '15 Sec';
     let currentTone = 'Energetic';
     let currentStyleName = '⚡ Summarize';
+    let logoContentText = 'Logo';
+    let logoImageSrc = null;
 
-    // 1. Toggle Source Input Type
     function toggleInputType(type) {
       if (type === 'link') {
         document.getElementById('url_input_container').classList.remove('hidden');
@@ -533,7 +582,6 @@
       }
     }
 
-    // 2. Handle File Upload into Player Preview
     function handleFileUpload(event) {
       const file = event.target.files[0];
       const videoElem = document.getElementById('preview_video_element');
@@ -555,7 +603,6 @@
       }
     }
 
-    // 3. Edit Style Selection
     function setEditStyle(styleName, styleKeyword) {
       currentStyleName = styleName;
       document.querySelectorAll('.edit-style-btn').forEach(btn => {
@@ -568,31 +615,42 @@
       document.getElementById('preview_caption_text').innerText = styleKeyword.toUpperCase();
     }
 
-    // 4. Update Aspect Ratio Frame
     function updateAspectRatio(ratio) {
       const playerFrame = document.getElementById('preview_player_frame');
       const tag = document.getElementById('preview_aspect_tag');
       
-      playerFrame.classList.remove('aspect-[9/16]', 'aspect-[16/9]', 'aspect-[1/1]', 'aspect-[4/5]', 'max-w-[280px]', 'max-w-[360px]');
+      playerFrame.classList.remove('aspect-[9/16]', 'aspect-[16/9]', 'aspect-[1/1]', 'aspect-[4/5]', 'max-w-[260px]', 'max-w-[340px]');
 
       if (ratio === '9:16') {
-        playerFrame.classList.add('aspect-[9/16]', 'max-w-[280px]');
+        playerFrame.classList.add('aspect-[9/16]', 'max-w-[260px]');
         tag.innerText = '9:16 Vertical';
       } else if (ratio === '16:9') {
-        playerFrame.classList.add('aspect-[16/9]', 'max-w-[360px]');
+        playerFrame.classList.add('aspect-[16/9]', 'max-w-[340px]');
         tag.innerText = '16:9 Landscape';
       } else if (ratio === '1:1') {
-        playerFrame.classList.add('aspect-[1/1]', 'max-w-[280px]');
+        playerFrame.classList.add('aspect-[1/1]', 'max-w-[260px]');
         tag.innerText = '1:1 Square';
       } else if (ratio === '4:5') {
-        playerFrame.classList.add('aspect-[4/5]', 'max-w-[280px]');
+        playerFrame.classList.add('aspect-[4/5]', 'max-w-[260px]');
         tag.innerText = '4:5 Portrait';
       }
     }
 
-    // 5. Length & Tone Updates
     function updateLength(val) {
-      currentLength = val;
+      const customContainer = document.getElementById('custom_length_container');
+      if (val === 'Custom') {
+        customContainer.classList.remove('hidden');
+        const customVal = document.getElementById('custom_length_input').value || 'Custom';
+        currentLength = customVal;
+      } else {
+        customContainer.classList.add('hidden');
+        currentLength = val;
+      }
+      document.getElementById('preview_details_text').innerText = `${currentLength} • ${currentTone} Voice`;
+    }
+
+    function updateCustomLength(val) {
+      currentLength = val || 'Custom';
       document.getElementById('preview_details_text').innerText = `${currentLength} • ${currentTone} Voice`;
     }
 
@@ -601,60 +659,85 @@
       document.getElementById('preview_details_text').innerText = `${currentLength} • ${currentTone} Voice`;
     }
 
-    // 6. Caption Style Switcher
     function updateCaptionStyle(styleKey) {
-      const box = document.getElementById('preview_caption_box');
       const txt = document.getElementById('preview_caption_text');
+      const box = document.getElementById('preview_caption_box');
+      
+      if (styleKey === 'none') {
+        box.classList.add('hidden');
+        return;
+      } else {
+        box.classList.remove('hidden');
+      }
 
-      // Reset base classes
-      box.className = "relative z-10 mt-auto px-3 py-1.5 rounded-lg text-center transition-all duration-200 ";
-      txt.className = "text-xs ";
+      txt.className = "text-xs drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] ";
 
       switch(styleKey) {
-        case 'bold-shadow':
-          box.className += "bg-black/60 backdrop-blur-md border border-white/10";
-          txt.className += "font-bold text-white drop-shadow-md";
+        case 'bold-shadow': txt.className += "font-bold text-white tracking-wide"; break;
+        case 'bold-highlight': txt.className += "font-bold text-yellow-300 tracking-wide"; break;
+        case 'plain-white': txt.className += "font-normal text-slate-100"; break;
+        case 'hormozi': txt.className += "font-black text-emerald-400 uppercase tracking-wider"; break;
+        case 'neon': txt.className += "font-black text-cyan-300 tracking-wider"; break;
+        case 'pastel': txt.className += "font-bold text-pink-400 tracking-wide"; break;
+        case 'yellow': txt.className += "font-extrabold text-amber-400 tracking-wide"; break;
+        case 'underline': txt.className += "font-semibold text-slate-200 underline decoration-indigo-500 decoration-2"; break;
+        case 'minimal': txt.className += "font-black text-rose-300 uppercase tracking-widest"; break;
+        case 'cinematic': txt.className += "font-light italic text-slate-100 tracking-wide"; break;
+      }
+    }
+
+    // Logo Handling & 10 Placements
+    function updateLogoContent() {
+      const textVal = document.getElementById('logo_text_input').value;
+      logoContentText = textVal ? textVal : 'Logo';
+      renderLogoVisual();
+    }
+
+    function handleLogoUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        logoImageSrc = URL.createObjectURL(file);
+        renderLogoVisual();
+      }
+    }
+
+    function renderLogoVisual() {
+      const displayElem = document.getElementById('preview_logo_display');
+      if (logoImageSrc) {
+        displayElem.innerHTML = `<img src="${logoImageSrc}" class="w-6 h-6 object-contain rounded inline-block" />`;
+      } else {
+        displayElem.innerText = logoContentText;
+      }
+    }
+
+    function updateLogoPlacement(option) {
+      const container = document.getElementById('preview_logo_container');
+      container.className = "absolute z-25 pointer-events-none transition-all duration-200 ";
+      container.innerHTML = `<span id="preview_logo_display" class="text-[10px] font-bold text-white/90 bg-black/50 px-1.5 py-0.5 rounded backdrop-blur-sm shadow">${logoImageSrc ? `<img src="${logoImageSrc}" class="w-5 h-5 object-contain inline-block" />` : logoContentText}</span>`;
+
+      switch(option) {
+        case '1': container.className += "top-3 right-3"; break; // Upper Right
+        case '2': container.className += "bottom-12 right-3"; break; // Lower Right
+        case '3': container.className += "top-3 left-3"; break; // Upper Left
+        case '4': container.className += "bottom-12 left-3"; break; // Lower Left
+        case '5': container.className += "top-3 left-1/2 -translate-x-1/2"; break; // Upper Center
+        case '6': container.className += "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"; break; // Middle Center
+        case '7': container.className += "bottom-12 left-1/2 -translate-x-1/2"; break; // Lower Center
+        case '8': 
+          container.className += "top-4 left-0 w-full text-center overflow-hidden";
+          container.innerHTML = `<div class="animate-marquee whitespace-nowrap"><span class="text-[10px] font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
           break;
-        case 'bold-highlight':
-          box.className += "bg-slate-900/80 border border-amber-500/30";
-          txt.className += "font-black text-amber-300 drop-shadow";
+        case '9': 
+          container.className += "bottom-12 left-0 w-full text-center overflow-hidden";
+          container.innerHTML = `<div class="animate-marquee whitespace-nowrap" style="animation-duration: 9s;"><span class="text-[10px] font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
           break;
-        case 'plain-white':
-          box.className += "bg-transparent";
-          txt.className += "font-normal text-slate-100";
-          break;
-        case 'hormozi':
-          box.className += "bg-black/80 border border-emerald-500/40";
-          txt.className += "font-black text-emerald-400 uppercase tracking-wider";
-          break;
-        case 'neon':
-          box.className += "bg-slate-950 border border-cyan-400 shadow-lg shadow-cyan-500/20";
-          txt.className += "font-black text-cyan-300";
-          break;
-        case 'pastel':
-          box.className += "bg-slate-900/90 rounded-full px-4";
-          txt.className += "font-bold text-pink-400";
-          break;
-        case 'yellow':
-          box.className += "bg-black/70";
-          txt.className += "font-extrabold text-amber-400";
-          break;
-        case 'underline':
-          box.className += "bg-slate-900/80";
-          txt.className += "font-semibold text-slate-200 underline decoration-indigo-500 decoration-2";
-          break;
-        case 'minimal':
-          box.className += "bg-rose-950/70 border border-rose-500/30";
-          txt.className += "font-black text-rose-300 uppercase tracking-widest";
-          break;
-        case 'cinematic':
-          box.className += "bg-transparent";
-          txt.className += "font-light italic text-slate-200 tracking-wide";
+        case '10': 
+          container.className += "top-1/2 left-0 w-full text-center overflow-hidden -translate-y-1/2";
+          container.innerHTML = `<div class="animate-marquee whitespace-nowrap" style="animation-duration: 7s;"><span class="text-[10px] font-bold text-white bg-black/60 px-2 py-0.5 rounded">${logoContentText}</span></div>`;
           break;
       }
     }
 
-    // 7. Graphic Overlay Tag Syncing
     function updateGraphicTags() {
       const checkedBoxes = document.querySelectorAll('.overlay-checkbox:checked');
       const container = document.getElementById('preview_overlays_container');
@@ -673,7 +756,6 @@
       updateGraphicTags();
     }
 
-    // 8. Render Animation Action
     function triggerRenderingAnimation() {
       const statusText = document.getElementById('preview_status_text');
       const icon = document.getElementById('preview_play_icon');
@@ -687,9 +769,9 @@
       }, 2000);
     }
 
-    // Initialize tags on page load
     window.onload = function() {
       updateGraphicTags();
+      renderLogoVisual();
     };
   </script>
 
