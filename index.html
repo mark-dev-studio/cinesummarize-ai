@@ -1,440 +1,281 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineSummarize AI - Video Summary & Narration Studio</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        dark: {
-                            900: '#090a0f',
-                            800: '#13151f',
-                            700: '#1c1f2e',
-                            600: '#282c42'
-                        },
-                        accent: {
-                            primary: '#6366f1',
-                            hover: '#4f46e5',
-                            neon: '#06b6d4'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #13151f;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #282c42;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4f46e5;
-        }
-
-        /* Aspect ratio preview frames */
-        .ratio-box {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Caption animation effects */
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-pop {
-            animation: popIn 0.15s ease-out forwards;
-        }
-
-        /* Multi-color word highlight styles */
-        .word-cyan { color: #06b6d4; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .word-yellow { color: #facc15; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .word-purple { color: #c084fc; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .word-green { color: #4ade80; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .word-white { color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .word-shadow { color: #ffffff; text-shadow: 2px 2px 0px #000000, 0 4px 12px rgba(0,0,0,0.9); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineSummarize AI - Smart Video Editor & Summarizer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .bg-grid {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+  </style>
 </head>
-<body class="bg-dark-900 text-gray-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans bg-grid antialiased">
 
-    <!-- Top Navigation Bar -->
-    <header class="border-b border-dark-700 bg-dark-800/80 backdrop-blur sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-            <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                <i class="fa-solid fa-wand-magic-sparkles text-white text-lg"></i>
+  <!-- Header / Navigation -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="bg-gradient-to-tr from-indigo-500 to-purple-500 p-2 rounded-xl text-white">
+          <i class="fa-solid me-0 fa-wand-magic-sparkles text-xl"></i>
+        </div>
+        <span class="text-xl font-bold bg-gradient-to-r from-white via-slate-200 to-indigo-400 bg-clip-text text-transparent">
+          CineSummarize AI
+        </span>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button class="text-sm px-3 py-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-300">
+          <i class="fa-solid fa-book-open mr-1.5"></i>Docs
+        </button>
+        <button class="text-sm px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium shadow-lg shadow-indigo-500/25">
+          Pro Upgrade
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- Left Controls Panel -->
+    <div class="lg:col-span-7 space-y-6">
+
+      <!-- Step 1: Media Input Source -->
+      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
+        <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center">
+          <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">1</span>
+          Select Source Input
+        </h2>
+        <div class="grid grid-cols-3 gap-3 mb-4">
+          <label class="cursor-pointer">
+            <input type="radio" name="input_type" checked class="peer hidden">
+            <div class="p-3 text-center border border-slate-700 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-600">
+              <i class="fa-solid fa-link text-lg mb-1 block"></i>
+              <span class="text-xs font-medium">Video Link</span>
             </div>
+          </label>
+          <label class="cursor-pointer">
+            <input type="radio" name="input_type" class="peer hidden">
+            <div class="p-3 text-center border border-slate-700 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-600">
+              <i class="fa-solid fa-file-video text-lg mb-1 block"></i>
+              <span class="text-xs font-medium">Raw Video</span>
+            </div>
+          </label>
+          <label class="cursor-pointer">
+            <input type="radio" name="input_type" class="peer hidden">
+            <div class="p-3 text-center border border-slate-700 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-600">
+              <i class="fa-solid fa-microphone text-lg mb-1 block"></i>
+              <span class="text-xs font-medium">Voiceover Only</span>
+            </div>
+          </label>
+        </div>
+
+        <div>
+          <input type="text" placeholder="Paste YouTube, TikTok, or video URL..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 text-slate-200">
+        </div>
+      </section>
+
+      <!-- Step 2: Edit Style & Workflow -->
+      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
+        <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center">
+          <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">2</span>
+          Choose Edit Style
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <button class="p-3 border border-indigo-500 bg-indigo-500/10 text-left rounded-xl hover:border-indigo-400">
+            <div class="font-medium text-sm text-indigo-300">⚡ Summarize</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Key takeaways & high points</div>
+          </button>
+          <button class="p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+            <div class="font-medium text-sm text-slate-200">✨ Motion Graphics</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Dynamic visual callouts</div>
+          </button>
+          <button class="p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+            <div class="font-medium text-sm text-slate-200">🎞️ Montage</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Fast beats & music cuts</div>
+          </button>
+          <button class="p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+            <div class="font-medium text-sm text-slate-200">🎬 Cinematic</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Narrative arc & grading</div>
+          </button>
+          <button class="p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+            <div class="font-medium text-sm text-slate-200">🚀 Speed-Ramp</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Velocity & fast zooms</div>
+          </button>
+          <button class="p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+            <div class="font-medium text-sm text-slate-200">🗣️ Talking Head</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Auto B-roll & framing</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Step 3: AI Effects & Overlay Library -->
+      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
+            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">3</span>
+            Select Graphic Effects & Overlays
+          </h2>
+          <button class="text-xs text-indigo-400 hover:underline">Select All AI Recommended</button>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-56 overflow-y-auto pr-1">
+          <!-- Effect Checkboxes -->
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">📄 Doc-Title</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">🪐 Orbit Graphics</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">📊 Stats-Split</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">🔦 Spotlight</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">☑️ Checklist</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">⏳ Timeline</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">👥 Lineup</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">🌧️ Shortcut Rain</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">🔴 Red-Collage</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">💬 Comment Box</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">📰 Cover Story</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">🧱 Headline Wall</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">📱 Phone-Fan</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">🖼️ Profile Wall</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">✂️ Split Headline</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">🎨 Pastel Word</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">🔍 Zoom In/Out</span>
+          </label>
+          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
+            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <span class="text-slate-300">🎙️ AI Voiceovers</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Generate Action Button -->
+      <button class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold shadow-lg shadow-indigo-500/20 hover:opacity-95 transition flex items-center justify-center space-x-2">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>Generate AI Video Edit</span>
+      </button>
+
+    </div>
+
+    <!-- Right Live Preview & Export Panel -->
+    <div class="lg:col-span-5 space-y-6">
+
+      <!-- Video Preview Player -->
+      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur flex flex-col items-center">
+        <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 w-full text-left">
+          Live AI Preview
+        </h2>
+
+        <div class="relative w-full aspect-[9/16] max-w-[280px] bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex flex-col items-center justify-between p-4 shadow-2xl">
+          <!-- Simulated Video Content -->
+          <div class="absolute inset-0 bg-gradient-to-b from-indigo-950/40 via-slate-900/80 to-slate-950 flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-16 h-16 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-2xl mb-3 animate-pulse">
+              <i class="fa-solid fa-play"></i>
+            </div>
+            <p class="text-xs text-slate-400">Rendering preview with selected AI motion graphics & captions...</p>
+          </div>
+
+          <!-- Dynamic Caption Overlay Mockup -->
+          <div class="relative z-10 mt-auto bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-center">
+            <span class="text-xs font-black text-amber-300 uppercase tracking-wide">FUTURE OF AI</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Export to External Editors (CapCut, Premiere, FCPX, DaVinci) -->
+      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
+        <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
+          Open & Edit In External Software
+        </h2>
+        <p class="text-xs text-slate-400 mb-4">
+          Export full timeline project files with editable tracks, captions, and keyframes.
+        </p>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
+            <i class="fa-solid fa-scissors text-indigo-400 text-lg"></i>
             <div>
-                <h1 class="font-extrabold text-lg bg-gradient-to-r from-white via-gray-200 to-indigo-300 bg-clip-text text-transparent">CineSummarize AI</h1>
-                <p class="text-xs text-gray-400">Autonomous Video Condensation & Voice Studio</p>
+              <div class="text-xs font-semibold text-slate-200">CapCut Project</div>
+              <div class="text-[10px] text-slate-500">.draft / Draft File</div>
             </div>
-        </div>
-        
-        <div class="flex items-center space-x-4">
-            <div class="hidden sm:flex items-center space-x-2 bg-dark-700 px-3 py-1.5 rounded-full border border-dark-600 text-xs">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="text-gray-300 font-medium">AI Engines Ready</span>
+          </button>
+          <button class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
+            <i class="fa-solid fa-film text-purple-400 text-lg"></i>
+            <div>
+              <div class="text-xs font-semibold text-slate-200">Premiere Pro</div>
+              <div class="text-[10px] text-slate-500">.xml / FCPXML</div>
             </div>
-            <button onclick="alert('Exporting project queue...')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition shadow-lg shadow-indigo-600/30 flex items-center space-x-2">
-                <i class="fa-solid fa-cloud-arrow-down"></i>
-                <span>Render All</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Main Workspace -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        <!-- LEFT PANEL: Inputs & Configuration (7 Cols) -->
-        <div class="lg:col-span-7 space-y-6">
-            
-            <!-- Step 1: Video Source Input -->
-            <section class="bg-dark-800 border border-dark-700 rounded-2xl p-5 shadow-xl">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="font-bold text-sm uppercase tracking-wider text-indigo-400 flex items-center space-x-2">
-                        <i class="fa-solid fa-video"></i>
-                        <span>1. Video Source</span>
-                    </h2>
-                    <!-- Input Method Tabs -->
-                    <div class="flex bg-dark-900 p-1 rounded-lg border border-dark-700 text-xs font-semibold">
-                        <button id="tab-url" onclick="switchInputTab('url')" class="px-3 py-1.5 rounded-md bg-indigo-600 text-white transition">Social / YouTube Link</button>
-                        <button id="tab-upload" onclick="switchInputTab('upload')" class="px-3 py-1.5 rounded-md text-gray-400 hover:text-white transition">Upload File</button>
-                    </div>
-                </div>
-
-                <!-- Social URL Input Panel -->
-                <div id="panel-url" class="space-y-3">
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                            <i class="fa-solid fa-link"></i>
-                        </div>
-                        <input type="url" id="social-link" placeholder="Paste YouTube, TikTok, Reels, or Vimeo link..." class="w-full bg-dark-900 border border-dark-700 rounded-xl pl-11 pr-24 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition">
-                        <button onclick="simulateLinkFetch()" class="absolute right-1.5 top-1.5 bottom-1.5 px-4 bg-dark-700 hover:bg-dark-600 text-indigo-300 rounded-lg text-xs font-semibold transition border border-dark-600">
-                            Fetch Info
-                        </button>
-                    </div>
-                    <p class="text-xs text-gray-500 flex items-center space-x-1">
-                        <i class="fa-solid fa-circle-info"></i>
-                        <span>Supports YouTube, TikTok, Instagram Reels, X/Twitter, and Vimeo links.</span>
-                    </p>
-                </div>
-
-                <!-- Local File Upload Panel (Hidden by default) -->
-                <div id="panel-upload" class="hidden space-y-3">
-                    <div class="border-2 border-dashed border-dark-600 hover:border-indigo-500 rounded-xl p-6 text-center cursor-pointer transition bg-dark-900/50">
-                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-indigo-400 mb-2"></i>
-                        <p class="text-sm font-semibold text-gray-200">Drag and drop your video file here</p>
-                        <p class="text-xs text-gray-500 mt-1">MP4, MOV, MKV or WEBM up to 4GB</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Step 2: Aspect Ratio & Smart Framing -->
-            <section class="bg-dark-800 border border-dark-700 rounded-2xl p-5 shadow-xl">
-                <h2 class="font-bold text-sm uppercase tracking-wider text-indigo-400 mb-4 flex items-center space-x-2">
-                    <i class="fa-solid fa-crop"></i>
-                    <span>2. Aspect Ratio & Framing</span>
-                </h2>
-                
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-                    <button onclick="setAspectRatio('9:16')" id="btn-ratio-9-16" class="p-3 rounded-xl border border-indigo-500 bg-indigo-950/40 text-left transition group">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-bold text-sm text-white">9:16</span>
-                            <i class="fa-solid fa-mobile-screen text-indigo-400"></i>
-                        </div>
-                        <p class="text-[11px] text-gray-400">Shorts / Reels / TikTok</p>
-                    </button>
-                    <button onclick="setAspectRatio('16:9')" id="btn-ratio-16-9" class="p-3 rounded-xl border border-dark-700 bg-dark-900 hover:border-dark-600 text-left transition group">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-bold text-sm text-white">16:9</span>
-                            <i class="fa-solid fa-tv text-gray-400 group-hover:text-indigo-400"></i>
-                        </div>
-                        <p class="text-[11px] text-gray-400">YouTube Cinema</p>
-                    </button>
-                    <button onclick="setAspectRatio('1:1')" id="btn-ratio-1-1" class="p-3 rounded-xl border border-dark-700 bg-dark-900 hover:border-dark-600 text-left transition group">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-bold text-sm text-white">1:1</span>
-                            <i class="fa-solid fa-square text-gray-400 group-hover:text-indigo-400"></i>
-                        </div>
-                        <p class="text-[11px] text-gray-400">Square Post</p>
-                    </button>
-                    <button onclick="setAspectRatio('4:5')" id="btn-ratio-4-5" class="p-3 rounded-xl border border-dark-700 bg-dark-900 hover:border-dark-600 text-left transition group">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-bold text-sm text-white">4:5</span>
-                            <i class="fa-solid fa-tablet-screen-button text-gray-400 group-hover:text-indigo-400"></i>
-                        </div>
-                        <p class="text-[11px] text-gray-400">Feed Portrait</p>
-                    </button>
-                </div>
-
-                <div class="flex items-center justify-between bg-dark-900 p-3.5 rounded-xl border border-dark-700">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 rounded-lg bg-indigo-950 flex items-center justify-center text-indigo-400">
-                            <i class="fa-solid fa-face-smile"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-semibold text-gray-200">AI Smart Focal Tracking</p>
-                            <p class="text-[11px] text-gray-400">Auto-crop and center faces or active action zones</p>
-                        </div>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" checked class="sr-only peer">
-                        <div class="w-9 h-5 bg-dark-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
-                    </label>
-                </div>
-            </section>
-
-            <!-- Step 3: Summary Duration & Voiceover -->
-            <section class="bg-dark-800 border border-dark-700 rounded-2xl p-5 shadow-xl">
-                <h2 class="font-bold text-sm uppercase tracking-wider text-indigo-400 mb-4 flex items-center space-x-2">
-                    <i class="fa-solid fa-microphone-lines"></i>
-                    <span>3. Summary Length & Voiceover</span>
-                </h2>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1.5">Target Duration</label>
-                        <select class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
-                            <option>3 Minutes (Standard Summary)</option>
-                            <option>1 Minute (Ultra Short Reel)</option>
-                            <option>5 Minutes (Detailed Breakdown)</option>
-                            <option>Custom Length</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-gray-400 mb-1.5">AI Narrator Voice</label>
-                        <select class="w-full bg-dark-900 border border-dark-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
-                            <option>Adam - Deep & Engaging (Male)</option>
-                            <option>Rachel - Professional & Warm (Female)</option>
-                            <option>Antony - Cinematic Trailer Voice</option>
-                            <option>Bella - Energetic TikTok Narration</option>
-                        </select>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Step 4: Short-Phrase Caption Customization -->
-            <section class="bg-dark-800 border border-dark-700 rounded-2xl p-5 shadow-xl">
-                <h2 class="font-bold text-sm uppercase tracking-wider text-indigo-400 mb-4 flex items-center space-x-2">
-                    <i class="fa-solid fa-closed-captioning"></i>
-                    <span>4. Caption Style (2-3 Words per Line)</span>
-                </h2>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-                    <button onclick="setCaptionStyle('plain')" id="btn-cap-plain" class="p-3 rounded-xl border border-indigo-500 bg-indigo-950/40 text-left transition">
-                        <p class="font-bold text-xs text-white mb-1">Style 1: Plain White</p>
-                        <p class="text-[11px] text-gray-400">Clean white typography without background.</p>
-                    </button>
-                    <button onclick="setCaptionStyle('shadow')" id="btn-cap-shadow" class="p-3 rounded-xl border border-dark-700 bg-dark-900 hover:border-dark-600 text-left transition">
-                        <p class="font-bold text-xs text-white mb-1">Style 2: White + Shadow</p>
-                        <p class="text-[11px] text-gray-400">White with soft dark drop shadow for contrast.</p>
-                    </button>
-                    <button onclick="setCaptionStyle('multicolor')" id="btn-cap-multicolor" class="p-3 rounded-xl border border-dark-700 bg-dark-900 hover:border-dark-600 text-left transition">
-                        <p class="font-bold text-xs text-white mb-1">Style 3: Multi-Color Word</p>
-                        <p class="text-[11px] text-gray-400">Different colors per word with spoken highlight.</p>
-                    </button>
-                </div>
-
-                <button onclick="startAiProcessing()" class="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/25 transition flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>Generate AI Video Summary</span>
-                </button>
-            </section>
-        </div>
-
-        <!-- RIGHT PANEL: Live Video Preview & Player (5 Cols) -->
-        <div class="lg:col-span-5 flex flex-col space-y-6">
-            <div class="bg-dark-800 border border-dark-700 rounded-2xl p-5 shadow-xl flex-1 flex flex-col">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="font-bold text-sm uppercase tracking-wider text-indigo-400 flex items-center space-x-2">
-                        <i class="fa-solid fa-play"></i>
-                        <span>Live Preview Player</span>
-                    </h2>
-                    <span id="active-ratio-badge" class="bg-indigo-950 text-indigo-300 border border-indigo-800 text-[11px] px-2.5 py-0.5 rounded-full font-semibold">9:16 Vertical</span>
-                </div>
-
-                <!-- Video Frame Container -->
-                <div class="flex-1 flex items-center justify-center bg-dark-900 rounded-xl border border-dark-700 p-4 min-h-[380px] relative overflow-hidden">
-                    
-                    <!-- Dynamic Aspect Ratio Preview Box -->
-                    <div id="preview-frame" class="ratio-box w-[215px] h-[380px] bg-black rounded-xl border-2 border-indigo-500/50 shadow-2xl relative flex flex-col justify-between overflow-hidden">
-                        
-                        <!-- Simulated Video Background (Mock) -->
-                        <div class="absolute inset-0 bg-gradient-to-b from-dark-800 via-indigo-950/60 to-dark-900 flex items-center justify-center">
-                            <div class="absolute inset-0 opacity-30 bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                            <!-- AI Tracking Box Simulation -->
-                            <div class="absolute w-24 h-36 border border-cyan-400/60 rounded-lg flex items-start p-1.5 animate-pulse">
-                                <span class="text-[9px] bg-cyan-500 text-black font-extrabold px-1 rounded">AI FOCUS</span>
-                            </div>
-                        </div>
-
-                        <!-- Top Player Info Overlay -->
-                        <div class="relative z-10 p-3 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
-                            <div class="flex items-center space-x-1.5">
-                                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                                <span class="text-[10px] font-mono text-gray-300">01:14 / 03:00</span>
-                            </div>
-                            <span class="text-[10px] bg-white/10 backdrop-blur px-2 py-0.5 rounded text-white font-medium">1080p 60fps</span>
-                        </div>
-
-                        <!-- Center Play Button (Click to toggle mock play) -->
-                        <div class="relative z-10 my-auto text-center">
-                            <button onclick="togglePlayState()" id="play-btn" class="w-12 h-12 rounded-full bg-indigo-600/80 hover:bg-indigo-600 text-white flex items-center justify-center mx-auto shadow-lg backdrop-blur transition transform hover:scale-105">
-                                <i id="play-icon" class="fa-solid fa-play ml-0.5"></i>
-                            </button>
-                        </div>
-
-                        <!-- Dynamic Caption Overlay (2-3 words per line, max 2 lines) -->
-                        <div class="relative z-10 p-4 text-center">
-                            <div id="caption-container" class="inline-block px-3 py-1.5 rounded-lg transition-all duration-150">
-                                <p id="caption-line-1" class="text-sm font-extrabold uppercase tracking-wide leading-tight word-shadow">AI transforms</p>
-                                <p id="caption-line-2" class="text-sm font-extrabold uppercase tracking-wide leading-tight word-shadow text-yellow-400 mt-0.5">long videos instantly</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Timeline Scrubber & Controls -->
-                <div class="mt-4 space-y-2">
-                    <div class="flex justify-between text-xs text-gray-400 font-medium">
-                        <span>0:00</span>
-                        <span>Summary Timeline</span>
-                        <span>3:00</span>
-                    </div>
-                    <div class="w-full bg-dark-900 h-2 rounded-full overflow-hidden border border-dark-700 cursor-pointer">
-                        <div class="bg-gradient-to-r from-indigo-500 to-cyan-400 h-full w-2/5 rounded-full relative"></div>
-                    </div>
-                </div>
-
+          </button>
+          <button class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
+            <i class="fa-solid fa-clapperboard text-pink-400 text-lg"></i>
+            <div>
+              <div class="text-xs font-semibold text-slate-200">DaVinci Resolve</div>
+              <div class="text-[10px] text-slate-500">.drp / Timeline</div>
             </div>
+          </button>
+          <button class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
+            <i class="fa-solid fa-download text-emerald-400 text-lg"></i>
+            <div>
+              <div class="text-xs font-semibold text-slate-200">Render Video</div>
+              <div class="text-[10px] text-slate-500">MP4 / 4K Export</div>
+            </div>
+          </button>
         </div>
+      </section>
 
-    </main>
+    </div>
 
-    <!-- Interactive Script Simulation & Logic -->
-    <script>
-        // Switch Input Methods
-        function switchInputTab(tab) {
-            const btnUrl = document.getElementById('tab-url');
-            const btnUpload = document.getElementById('tab-upload');
-            const panelUrl = document.getElementById('panel-url');
-            const panelUpload = document.getElementById('panel-upload');
+  </main>
 
-            if (tab === 'url') {
-                btnUrl.className = "px-3 py-1.5 rounded-md bg-indigo-600 text-white transition";
-                btnUpload.className = "px-3 py-1.5 rounded-md text-gray-400 hover:text-white transition";
-                panelUrl.classList.remove('hidden');
-                panelUpload.classList.add('hidden');
-            } else {
-                btnUpload.className = "px-3 py-1.5 rounded-md bg-indigo-600 text-white transition";
-                btnUrl.className = "px-3 py-1.5 rounded-md text-gray-400 hover:text-white transition";
-                panelUpload.classList.remove('hidden');
-                panelUrl.classList.add('hidden');
-            }
-        }
-
-        // Switch Aspect Ratios
-        function setAspectRatio(ratio) {
-            ['9:16', '16:9', '1:1', '4:5'].forEach(r => {
-                const btnId = 'btn-ratio-' + r.replace(':', '-');
-                document.getElementById(btnId).className = "p-3 rounded-xl border border-dark-700 bg-dark-900 hover:border-dark-600 text-left transition group";
-            });
-
-            const activeBtnId = 'btn-ratio-' + ratio.replace(':', '-');
-            document.getElementById(activeBtnId).className = "p-3 rounded-xl border border-indigo-500 bg-indigo-950/40 text-left transition group";
-            document.getElementById('active-ratio-badge').innerText = ratio + (ratio === '9:16' ? ' Vertical' : ratio === '16:9' ? ' Cinema' : ' Square');
-
-            const frame = document.getElementById('preview-frame');
-            if (ratio === '9:16') {
-                frame.style.width = '215px';
-                frame.style.height = '380px';
-            } else if (ratio === '16:9') {
-                frame.style.width = '380px';
-                frame.style.height = '214px';
-            } else if (ratio === '1:1') {
-                frame.style.width = '300px';
-                frame.style.height = '300px';
-            } else if (ratio === '4:5') {
-                frame.style.width = '260px';
-                frame.style.height = '325px';
-            }
-        }
-
-        // Caption Styles
-        let currentCaptionStyle = 'plain';
-        function setCaptionStyle(style) {
-            currentCaptionStyle = style;
-            ['plain', 'shadow', 'multicolor'].forEach(s => {
-                document.getElementById('btn-cap-' + s).className = "p-3 rounded-xl border border-dark-700 bg-dark-900 hover:border-dark-600 text-left transition";
-            });
-            document.getElementById('btn-cap-' + style).className = "p-3 rounded-xl border border-indigo-500 bg-indigo-950/40 text-left transition";
-            updateCaptionDisplay();
-        }
-
-        function updateCaptionDisplay() {
-            const l1 = document.getElementById('caption-line-1');
-            const l2 = document.getElementById('caption-line-2');
-            
-            if (currentCaptionStyle === 'plain') {
-                l1.className = "text-sm font-extrabold uppercase tracking-wide leading-tight text-white animate-pop";
-                l2.className = "text-sm font-extrabold uppercase tracking-wide leading-tight text-gray-200 mt-0.5 animate-pop";
-                l1.innerText = "AI transforms";
-                l2.innerText = "long videos instantly";
-            } else if (currentCaptionStyle === 'shadow') {
-                l1.className = "text-sm font-extrabold uppercase tracking-wide leading-tight word-shadow animate-pop";
-                l2.className = "text-sm font-extrabold uppercase tracking-wide leading-tight word-shadow text-yellow-400 mt-0.5 animate-pop";
-                l1.innerText = "AI transforms";
-                l2.innerText = "long videos instantly";
-            } else if (currentCaptionStyle === 'multicolor') {
-                l1.innerHTML = '<span class="word-cyan">AI</span> <span class="word-purple">transforms</span>';
-                l2.innerHTML = '<span class="word-green">long</span> <span class="word-yellow">videos</span>';
-            }
-        }
-
-        // Play / Pause Simulation
-        let isPlaying = false;
-        function togglePlayState() {
-            isPlaying = !isPlaying;
-            const icon = document.getElementById('play-icon');
-            if (isPlaying) {
-                icon.className = "fa-solid fa-pause";
-            } else {
-                icon.className = "fa-solid fa-play ml-0.5";
-            }
-        }
-
-        function simulateLinkFetch() {
-            const urlInput = document.getElementById('social-link').value;
-            if(!urlInput) {
-                alert('Please paste a valid video link first.');
-                return;
-            }
-            alert('Fetching video metadata and subtitle streams successfully!');
-        }
-
-        function startAiProcessing() {
-            alert('AI Pipeline Initialized: Transcribing audio, generating summary, voiceover narrator, and rendering 2-3 word captions!');
-        }
-    </script>
 </body>
 </html>
