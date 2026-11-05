@@ -51,14 +51,14 @@
         </h2>
         <div class="grid grid-cols-2 gap-3 mb-4">
           <label class="cursor-pointer">
-            <input type="radio" name="input_type" checked class="peer hidden">
+            <input type="radio" name="input_type" value="link" checked class="peer hidden" onchange="toggleInputType(this.value)">
             <div class="p-3 text-center border border-slate-700 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-600">
               <i class="fa-solid fa-link text-lg mb-1 block"></i>
               <span class="text-xs font-medium">Video Link</span>
             </div>
           </label>
           <label class="cursor-pointer">
-            <input type="radio" name="input_type" class="peer hidden">
+            <input type="radio" name="input_type" value="file" class="peer hidden" onchange="toggleInputType(this.value)">
             <div class="p-3 text-center border border-slate-700 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-600">
               <i class="fa-solid fa-file-video text-lg mb-1 block"></i>
               <span class="text-xs font-medium">Raw Video</span>
@@ -66,8 +66,11 @@
           </label>
         </div>
 
-        <div>
-          <input type="text" placeholder="Paste YouTube, TikTok, or video URL..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 text-slate-200">
+        <div id="url_input_container">
+          <input type="text" id="video_url_input" oninput="updatePreviewText()" placeholder="Paste YouTube, TikTok, or video URL..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 text-slate-200">
+        </div>
+        <div id="file_input_container" class="hidden">
+          <input type="file" id="video_file_input" accept="video/*" onchange="handleFileUpload(event)" class="w-full text-xs text-slate-400 border border-slate-800 rounded-xl px-4 py-2 bg-slate-950 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer">
         </div>
       </section>
 
@@ -78,34 +81,34 @@
           Choose Edit Style
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-          <button class="p-3 border border-indigo-500 bg-indigo-500/10 text-left rounded-xl hover:border-indigo-400">
+          <button onclick="setEditStyle('⚡ Summarize', 'Key Takeaways')" class="edit-style-btn p-3 border border-indigo-500 bg-indigo-500/10 text-left rounded-xl hover:border-indigo-400">
             <div class="font-medium text-sm text-indigo-300">⚡ Summarize</div>
             <div class="text-[11px] text-slate-400 mt-0.5">Key takeaways & high points</div>
           </button>
-          <button class="p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+          <button onclick="setEditStyle('✨ Motion Graphics', 'Visual Callouts')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
             <div class="font-medium text-sm text-slate-200">✨ Motion Graphics</div>
             <div class="text-[11px] text-slate-400 mt-0.5">Dynamic visual callouts</div>
           </button>
-          <button class="p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+          <button onclick="setEditStyle('🎞️ Montage', 'Beat Sync Cut')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
             <div class="font-medium text-sm text-slate-200">🎞️ Montage</div>
             <div class="text-[11px] text-slate-400 mt-0.5">Fast beats & music cuts</div>
           </button>
-          <button class="p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+          <button onclick="setEditStyle('🎬 Cinematic', 'Narrative Arc')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
             <div class="font-medium text-sm text-slate-200">🎬 Cinematic</div>
             <div class="text-[11px] text-slate-400 mt-0.5">Narrative arc & grading</div>
           </button>
-          <button class="p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+          <button onclick="setEditStyle('🚀 Speed-Ramp', 'Speed Zooming')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
             <div class="font-medium text-sm text-slate-200">🚀 Speed-Ramp</div>
             <div class="text-[11px] text-slate-400 mt-0.5">Velocity & fast zooms</div>
           </button>
-          <button class="p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
+          <button onclick="setEditStyle('🗣️ Talking Head', 'Auto Framing')" class="edit-style-btn p-3 border border-slate-800 bg-slate-950 text-left rounded-xl hover:border-slate-700">
             <div class="font-medium text-sm text-slate-200">🗣️ Talking Head</div>
             <div class="text-[11px] text-slate-400 mt-0.5">Auto B-roll & framing</div>
           </button>
         </div>
       </section>
 
-      <!-- Step 3: Format & Voice Configuration -->
+      <!-- Step 3: Format, Voice & Caption Customization -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur space-y-5">
         <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
           <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">3</span>
@@ -117,15 +120,15 @@
           <label class="block text-xs font-medium text-slate-300 mb-2">Aspect Ratio & Framing</label>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
             <label class="cursor-pointer">
-              <input type="radio" name="aspect_ratio" checked class="peer hidden">
+              <input type="radio" name="aspect_ratio" value="9:16" checked onchange="updateAspectRatio('9:16')" class="peer hidden">
               <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
                 <i class="fa-solid fa-mobile-screen text-sm mb-1 block"></i>
                 <div class="text-xs font-semibold">9:16 Vertical</div>
-                <div class="text-[10px] text-slate-500">TikTok / Reels / Shorts</div>
+                <div class="text-[10px] text-slate-500">TikTok / Shorts</div>
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="aspect_ratio" class="peer hidden">
+              <input type="radio" name="aspect_ratio" value="16:9" onchange="updateAspectRatio('16:9')" class="peer hidden">
               <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
                 <i class="fa-solid fa-display text-sm mb-1 block"></i>
                 <div class="text-xs font-semibold">16:9 Landscape</div>
@@ -133,7 +136,7 @@
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="aspect_ratio" class="peer hidden">
+              <input type="radio" name="aspect_ratio" value="1:1" onchange="updateAspectRatio('1:1')" class="peer hidden">
               <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
                 <i class="fa-solid fa-square text-sm mb-1 block"></i>
                 <div class="text-xs font-semibold">1:1 Square</div>
@@ -141,7 +144,7 @@
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="aspect_ratio" class="peer hidden">
+              <input type="radio" name="aspect_ratio" value="4:5" onchange="updateAspectRatio('4:5')" class="peer hidden">
               <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
                 <i class="fa-solid fa-crop-simple text-sm mb-1 block"></i>
                 <div class="text-xs font-semibold">4:5 Portrait</div>
@@ -151,64 +154,185 @@
           </div>
         </div>
 
-        <!-- Summary Length & Voiceover -->
+        <!-- Summary Length -->
         <div>
-          <label class="block text-xs font-medium text-slate-300 mb-2">Summary Length & Voiceover Style</label>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <label class="block text-xs font-medium text-slate-300 mb-2">Summary Length</label>
+          <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
             <label class="cursor-pointer">
-              <input type="radio" name="summary_length" checked class="peer hidden">
-              <div class="p-2.5 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-xs font-semibold">⚡ Short Teaser (15–30s)</div>
-                <div class="text-[10px] text-slate-400 mt-1">High-energy narrative voice</div>
+              <input type="radio" name="summary_length" value="15 Sec" checked onchange="updateLength(this.value)" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700 text-xs font-semibold">
+                15 Sec
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="summary_length" class="peer hidden">
-              <div class="p-2.5 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-xs font-semibold">📝 Standard Recap (1–3m)</div>
-                <div class="text-[10px] text-slate-400 mt-1">Professional documentarian tone</div>
+              <input type="radio" name="summary_length" value="30 Sec" onchange="updateLength(this.value)" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700 text-xs font-semibold">
+                30 Sec
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="summary_length" class="peer hidden">
-              <div class="p-2.5 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-xs font-semibold">🎙️ Deep Dive (3–5m)</div>
-                <div class="text-[10px] text-slate-400 mt-1">Conversational commentary voice</div>
+              <input type="radio" name="summary_length" value="1 Min" onchange="updateLength(this.value)" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700 text-xs font-semibold">
+                1 Min
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="summary_length" value="3 Min" onchange="updateLength(this.value)" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700 text-xs font-semibold">
+                3 Min
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="summary_length" value="Custom" onchange="updateLength(this.value)" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700 text-xs font-semibold">
+                Custom
               </div>
             </label>
           </div>
         </div>
 
-        <!-- Caption Style (2-3 Words per Line) -->
+        <!-- 9 AI Voiceover Tones -->
         <div>
-          <label class="block text-xs font-medium text-slate-300 mb-2">Caption Style (2–3 Words per Line)</label>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <label class="block text-xs font-medium text-slate-300 mb-2">AI Voiceover Tone (9 Popular Voices)</label>
+          <div class="grid grid-cols-3 gap-2">
             <label class="cursor-pointer">
-              <input type="radio" name="caption_style" checked class="peer hidden">
-              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-xs font-black uppercase text-amber-300">Bold Pop</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Yellow & white emphasis</div>
+              <input type="radio" name="voice_style" value="Energetic" checked onchange="updateVoiceTone(this.value)" class="peer hidden">
+              <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-medium">⚡ Energetic</div>
+                <div class="text-[10px] text-slate-500">Punchy & Fast</div>
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="caption_style" class="peer hidden">
-              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-xs font-black uppercase text-emerald-400">Hormozi Style</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Word highlight popups</div>
+              <input type="radio" name="voice_style" value="Documentarian" onchange="updateVoiceTone(this.value)" class="peer hidden">
+              <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-medium">🎥 Documentarian</div>
+                <div class="text-[10px] text-slate-500">Serious & Clear</div>
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="caption_style" class="peer hidden">
-              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-xs font-black uppercase text-pink-400">Pastel Pill</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Rounded dark backdrop</div>
+              <input type="radio" name="voice_style" value="Cinematic Deep" onchange="updateVoiceTone(this.value)" class="peer hidden">
+              <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-medium">🎬 Cinematic Deep</div>
+                <div class="text-[10px] text-slate-500">Trailer Voice</div>
               </div>
             </label>
             <label class="cursor-pointer">
-              <input type="radio" name="caption_style" class="peer hidden">
-              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
-                <div class="text-xs font-black uppercase text-cyan-300">Clean Minimal</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Subtle bottom overlay</div>
+              <input type="radio" name="voice_style" value="Casual Chat" onchange="updateVoiceTone(this.value)" class="peer hidden">
+              <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-medium">☕ Casual Chat</div>
+                <div class="text-[10px] text-slate-500">Friendly & Natural</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="voice_style" value="Authoritative" onchange="updateVoiceTone(this.value)" class="peer hidden">
+              <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-medium">🎙️ Authoritative</div>
+                <div class="text-[10px] text-slate-500">News & Podcast</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="voice_style" value="Storyteller" onchange="updateVoiceTone(this.value)" class="peer hidden">
+              <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-medium">📖 Storyteller</div>
+                <div class="text-[10px] text-slate-500">Smooth & Warm</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="voice_style" value="Corporate" onchange="updateVoiceTone(this.value)" class="peer hidden">
+              <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-medium">💼 Corporate</div>
+                <div class="text-[10px] text-slate-500">Professional Pitch</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="voice_style" value="Hype Creator" onchange="updateVoiceTone(this.value)" class="peer hidden">
+              <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-medium">🔥 Hype Creator</div>
+                <div class="text-[10px] text-slate-500">Viral Short-Form</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="voice_style" value="Calm & Chill" onchange="updateVoiceTone(this.value)" class="peer hidden">
+              <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-medium">🌿 Calm & Chill</div>
+                <div class="text-[10px] text-slate-500">Relaxed Narration</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- 10 Caption Styles -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-2">Caption Style (2–3 Words per Line - 10 Options)</label>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" value="bold-shadow" checked onchange="updateCaptionStyle('bold-shadow')" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-[11px] font-bold text-white shadow-md">White Bold + Shadow</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">Dark background shadow</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" value="bold-highlight" onchange="updateCaptionStyle('bold-highlight')" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-[11px] font-bold text-yellow-300 drop-shadow">White Bold + Highlight</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">White with yellow pop</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" value="plain-white" onchange="updateCaptionStyle('plain-white')" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-[11px] font-normal text-slate-200">Plain White</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">Clean regular font</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" value="hormozi" onchange="updateCaptionStyle('hormozi')" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-[11px] font-black text-emerald-400 uppercase">Hormozi Pop</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">Green/Yellow bounce</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" value="neon" onchange="updateCaptionStyle('neon')" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-[11px] font-black text-cyan-300">Neon Glow</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">High contrast outline</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" value="pastel" onchange="updateCaptionStyle('pastel')" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-[11px] font-bold text-pink-400 bg-slate-900 px-1 rounded">Pastel Pill</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">Dark pill background</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" value="yellow" onchange="updateCaptionStyle('yellow')" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-[11px] font-extrabold text-amber-400">Bold Yellow</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">Classic high visibility</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" value="underline" onchange="updateCaptionStyle('underline')" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-[11px] font-semibold text-slate-300 underline decoration-indigo-500">Underline Pop</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">Active word underline</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" value="minimal" onchange="updateCaptionStyle('minimal')" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-[11px] font-black text-rose-400 uppercase tracking-widest">Minimal Box</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">Semi-transparent box</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" value="cinematic" onchange="updateCaptionStyle('cinematic')" class="peer hidden">
+              <div class="p-2 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-[11px] font-light text-slate-100 italic">Cinematic Subtle</div>
+                <div class="text-[9px] text-slate-500 mt-0.5">Bottom centered serif</div>
               </div>
             </label>
           </div>
@@ -223,83 +347,83 @@
             <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">4</span>
             Select Graphic Effects & Overlays
           </h2>
-          <button class="text-xs text-indigo-400 hover:underline">Select All AI Recommended</button>
+          <button onclick="selectAllOverlays()" class="text-xs text-indigo-400 hover:underline">Select All AI Recommended</button>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-56 overflow-y-auto pr-1">
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Doc-Title" onchange="updateGraphicTags()" checked class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">📄 Doc-Title</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Orbit" onchange="updateGraphicTags()" checked class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">🪐 Orbit Graphics</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Stats-Split" onchange="updateGraphicTags()" checked class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">📊 Stats-Split</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Spotlight" onchange="updateGraphicTags()" class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">🔦 Spotlight</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Checklist" onchange="updateGraphicTags()" checked class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">☑️ Checklist</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Timeline" onchange="updateGraphicTags()" class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">⏳ Timeline</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Lineup" onchange="updateGraphicTags()" class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">👥 Lineup</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Shortcut Rain" onchange="updateGraphicTags()" checked class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">🌧️ Shortcut Rain</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Red-Collage" onchange="updateGraphicTags()" checked class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">🔴 Red-Collage</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Comment Box" onchange="updateGraphicTags()" class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">💬 Comment Box</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Cover Story" onchange="updateGraphicTags()" class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">📰 Cover Story</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Headline Wall" onchange="updateGraphicTags()" class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">🧱 Headline Wall</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Phone-Fan" onchange="updateGraphicTags()" class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">📱 Phone-Fan</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Profile Wall" onchange="updateGraphicTags()" class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">🖼️ Profile Wall</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Split Headline" onchange="updateGraphicTags()" checked class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">✂️ Split Headline</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Pastel Word" onchange="updateGraphicTags()" class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">🎨 Pastel Word</span>
           </label>
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
+            <input type="checkbox" value="Zoom In/Out" onchange="updateGraphicTags()" checked class="overlay-checkbox rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">🔍 Zoom In/Out</span>
           </label>
         </div>
       </section>
 
       <!-- Generate Action Button -->
-      <button class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold shadow-lg shadow-indigo-500/20 hover:opacity-95 transition flex items-center justify-center space-x-2">
+      <button onclick="triggerRenderingAnimation()" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold shadow-lg shadow-indigo-500/20 hover:opacity-95 transition flex items-center justify-center space-x-2">
         <i class="fa-solid fa-wand-magic-sparkles"></i>
         <span>Generate AI Video Edit</span>
       </button>
@@ -309,28 +433,45 @@
     <!-- Right Live Preview & Export Panel -->
     <div class="lg:col-span-5 space-y-6">
 
-      <!-- Video Preview Player -->
+      <!-- Live Interactive Video Preview Player -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur flex flex-col items-center">
-        <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 w-full text-left">
-          Live AI Preview
-        </h2>
+        <div class="flex items-center justify-between w-full mb-3">
+          <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">
+            Live AI Preview
+          </h2>
+          <span id="preview_aspect_tag" class="text-[11px] px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-mono">
+            9:16 Vertical
+          </span>
+        </div>
 
-        <div class="relative w-full aspect-[9/16] max-w-[280px] bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex flex-col items-center justify-between p-4 shadow-2xl">
-          <div class="absolute inset-0 bg-gradient-to-b from-indigo-950/40 via-slate-900/80 to-slate-950 flex flex-col items-center justify-center p-6 text-center">
-            <div class="w-16 h-16 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-2xl mb-3 animate-pulse">
+        <!-- Dynamic Aspect Ratio Container -->
+        <div id="preview_player_frame" class="relative w-full aspect-[9/16] max-w-[280px] bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex flex-col items-center justify-between p-4 shadow-2xl transition-all duration-300">
+          
+          <!-- Simulated Video / Uploaded Media Canvas -->
+          <video id="preview_video_element" class="absolute inset-0 w-full h-full object-cover hidden" loop muted playsinline></video>
+          
+          <div id="preview_placeholder_bg" class="absolute inset-0 bg-gradient-to-b from-indigo-950/40 via-slate-900/80 to-slate-950 flex flex-col items-center justify-center p-6 text-center">
+            <div id="preview_play_icon" class="w-14 h-14 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-2xl mb-3 animate-pulse">
               <i class="fa-solid fa-play"></i>
             </div>
-            <p class="text-xs text-slate-400">Rendering preview with selected ratio, captions, and motion graphics...</p>
+            <p id="preview_status_text" class="text-xs text-slate-300 font-medium">Ready to render video</p>
+            <p id="preview_details_text" class="text-[10px] text-slate-500 mt-1">15 Sec • Energetic Voice</p>
+          </div>
+
+          <!-- Active Overlays Header Badge -->
+          <div id="preview_overlays_container" class="relative z-10 w-full flex flex-wrap gap-1 justify-center max-h-12 overflow-hidden">
+            <!-- Overlays injected dynamically -->
           </div>
 
           <!-- Dynamic Caption Overlay Mockup (2-3 Words) -->
-          <div class="relative z-10 mt-auto bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-center">
-            <span class="text-xs font-black text-amber-300 uppercase tracking-wide">FUTURE OF AI</span>
+          <div id="preview_caption_box" class="relative z-10 mt-auto px-3 py-1.5 rounded-lg text-center transition-all duration-200">
+            <span id="preview_caption_text" class="text-xs font-black text-white drop-shadow-md">FUTURE OF AI</span>
           </div>
+
         </div>
       </section>
 
-      <!-- Export to External Editors (CapCut, Premiere, FCPX, DaVinci) -->
+      <!-- Export to External Editors -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
         <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
           Open & Edit In External Software
@@ -340,28 +481,28 @@
         </p>
 
         <div class="grid grid-cols-2 gap-3">
-          <button class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
+          <button onclick="alert('Exporting CapCut .draft project file...')" class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
             <i class="fa-solid fa-scissors text-indigo-400 text-lg"></i>
             <div>
               <div class="text-xs font-semibold text-slate-200">CapCut Project</div>
               <div class="text-[10px] text-slate-500">.draft / Draft File</div>
             </div>
           </button>
-          <button class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
+          <button onclick="alert('Exporting Adobe Premiere FCPXML timeline...')" class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
             <i class="fa-solid fa-film text-purple-400 text-lg"></i>
             <div>
               <div class="text-xs font-semibold text-slate-200">Premiere Pro</div>
               <div class="text-[10px] text-slate-500">.xml / FCPXML</div>
             </div>
           </button>
-          <button class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
+          <button onclick="alert('Exporting DaVinci Resolve project...')" class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
             <i class="fa-solid fa-clapperboard text-pink-400 text-lg"></i>
             <div>
               <div class="text-xs font-semibold text-slate-200">DaVinci Resolve</div>
               <div class="text-[10px] text-slate-500">.drp / Timeline</div>
             </div>
           </button>
-          <button class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
+          <button onclick="alert('Starting full 4K MP4 video render...')" class="p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 flex items-center space-x-3 text-left">
             <i class="fa-solid fa-download text-emerald-400 text-lg"></i>
             <div>
               <div class="text-xs font-semibold text-slate-200">Render Video</div>
@@ -374,6 +515,183 @@
     </div>
 
   </main>
+
+  <!-- Interactive JavaScript Engine for Live Preview -->
+  <script>
+    let currentLength = '15 Sec';
+    let currentTone = 'Energetic';
+    let currentStyleName = '⚡ Summarize';
+
+    // 1. Toggle Source Input Type
+    function toggleInputType(type) {
+      if (type === 'link') {
+        document.getElementById('url_input_container').classList.remove('hidden');
+        document.getElementById('file_input_container').classList.add('hidden');
+      } else {
+        document.getElementById('url_input_container').classList.add('hidden');
+        document.getElementById('file_input_container').classList.remove('hidden');
+      }
+    }
+
+    // 2. Handle File Upload into Player Preview
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      const videoElem = document.getElementById('preview_video_element');
+      const placeholder = document.getElementById('preview_placeholder_bg');
+      
+      if (file) {
+        const url = URL.createObjectURL(file);
+        videoElem.src = url;
+        videoElem.classList.remove('hidden');
+        placeholder.classList.add('opacity-30');
+        videoElem.play();
+      }
+    }
+
+    function updatePreviewText() {
+      const urlVal = document.getElementById('video_url_input').value;
+      if (urlVal) {
+        document.getElementById('preview_status_text').innerText = 'Video Link Loaded';
+      }
+    }
+
+    // 3. Edit Style Selection
+    function setEditStyle(styleName, styleKeyword) {
+      currentStyleName = styleName;
+      document.querySelectorAll('.edit-style-btn').forEach(btn => {
+        btn.classList.remove('border-indigo-500', 'bg-indigo-500/10');
+        btn.classList.add('border-slate-800', 'bg-slate-950');
+      });
+      event.currentTarget.classList.remove('border-slate-800', 'bg-slate-950');
+      event.currentTarget.classList.add('border-indigo-500', 'bg-indigo-500/10');
+      
+      document.getElementById('preview_caption_text').innerText = styleKeyword.toUpperCase();
+    }
+
+    // 4. Update Aspect Ratio Frame
+    function updateAspectRatio(ratio) {
+      const playerFrame = document.getElementById('preview_player_frame');
+      const tag = document.getElementById('preview_aspect_tag');
+      
+      playerFrame.classList.remove('aspect-[9/16]', 'aspect-[16/9]', 'aspect-[1/1]', 'aspect-[4/5]', 'max-w-[280px]', 'max-w-[360px]');
+
+      if (ratio === '9:16') {
+        playerFrame.classList.add('aspect-[9/16]', 'max-w-[280px]');
+        tag.innerText = '9:16 Vertical';
+      } else if (ratio === '16:9') {
+        playerFrame.classList.add('aspect-[16/9]', 'max-w-[360px]');
+        tag.innerText = '16:9 Landscape';
+      } else if (ratio === '1:1') {
+        playerFrame.classList.add('aspect-[1/1]', 'max-w-[280px]');
+        tag.innerText = '1:1 Square';
+      } else if (ratio === '4:5') {
+        playerFrame.classList.add('aspect-[4/5]', 'max-w-[280px]');
+        tag.innerText = '4:5 Portrait';
+      }
+    }
+
+    // 5. Length & Tone Updates
+    function updateLength(val) {
+      currentLength = val;
+      document.getElementById('preview_details_text').innerText = `${currentLength} • ${currentTone} Voice`;
+    }
+
+    function updateVoiceTone(val) {
+      currentTone = val;
+      document.getElementById('preview_details_text').innerText = `${currentLength} • ${currentTone} Voice`;
+    }
+
+    // 6. Caption Style Switcher
+    function updateCaptionStyle(styleKey) {
+      const box = document.getElementById('preview_caption_box');
+      const txt = document.getElementById('preview_caption_text');
+
+      // Reset base classes
+      box.className = "relative z-10 mt-auto px-3 py-1.5 rounded-lg text-center transition-all duration-200 ";
+      txt.className = "text-xs ";
+
+      switch(styleKey) {
+        case 'bold-shadow':
+          box.className += "bg-black/60 backdrop-blur-md border border-white/10";
+          txt.className += "font-bold text-white drop-shadow-md";
+          break;
+        case 'bold-highlight':
+          box.className += "bg-slate-900/80 border border-amber-500/30";
+          txt.className += "font-black text-amber-300 drop-shadow";
+          break;
+        case 'plain-white':
+          box.className += "bg-transparent";
+          txt.className += "font-normal text-slate-100";
+          break;
+        case 'hormozi':
+          box.className += "bg-black/80 border border-emerald-500/40";
+          txt.className += "font-black text-emerald-400 uppercase tracking-wider";
+          break;
+        case 'neon':
+          box.className += "bg-slate-950 border border-cyan-400 shadow-lg shadow-cyan-500/20";
+          txt.className += "font-black text-cyan-300";
+          break;
+        case 'pastel':
+          box.className += "bg-slate-900/90 rounded-full px-4";
+          txt.className += "font-bold text-pink-400";
+          break;
+        case 'yellow':
+          box.className += "bg-black/70";
+          txt.className += "font-extrabold text-amber-400";
+          break;
+        case 'underline':
+          box.className += "bg-slate-900/80";
+          txt.className += "font-semibold text-slate-200 underline decoration-indigo-500 decoration-2";
+          break;
+        case 'minimal':
+          box.className += "bg-rose-950/70 border border-rose-500/30";
+          txt.className += "font-black text-rose-300 uppercase tracking-widest";
+          break;
+        case 'cinematic':
+          box.className += "bg-transparent";
+          txt.className += "font-light italic text-slate-200 tracking-wide";
+          break;
+      }
+    }
+
+    // 7. Graphic Overlay Tag Syncing
+    function updateGraphicTags() {
+      const checkedBoxes = document.querySelectorAll('.overlay-checkbox:checked');
+      const container = document.getElementById('preview_overlays_container');
+      container.innerHTML = '';
+
+      checkedBoxes.forEach(cb => {
+        const badge = document.createElement('span');
+        badge.className = 'text-[9px] px-1.5 py-0.5 rounded bg-indigo-950/80 text-indigo-300 border border-indigo-500/30 font-medium backdrop-blur-sm';
+        badge.innerText = cb.value;
+        container.appendChild(badge);
+      });
+    }
+
+    function selectAllOverlays() {
+      document.querySelectorAll('.overlay-checkbox').forEach(cb => cb.checked = true);
+      updateGraphicTags();
+    }
+
+    // 8. Render Animation Action
+    function triggerRenderingAnimation() {
+      const statusText = document.getElementById('preview_status_text');
+      const icon = document.getElementById('preview_play_icon');
+      
+      statusText.innerText = '⚡ AI Processing Video...';
+      icon.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+      setTimeout(() => {
+        statusText.innerText = '✨ AI Video Render Complete!';
+        icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+      }, 2000);
+    }
+
+    // Initialize tags on page load
+    window.onload = function() {
+      updateGraphicTags();
+    };
+  </script>
 
 </body>
 </html>
