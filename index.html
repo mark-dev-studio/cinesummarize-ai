@@ -20,7 +20,7 @@
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <div class="bg-gradient-to-tr from-indigo-500 to-purple-500 p-2 rounded-xl text-white">
-          <i class="fa-solid me-0 fa-wand-magic-sparkles text-xl"></i>
+          <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
         </div>
         <span class="text-xl font-bold bg-gradient-to-r from-white via-slate-200 to-indigo-400 bg-clip-text text-transparent">
           CineSummarize AI
@@ -49,7 +49,7 @@
           <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">1</span>
           Select Source Input
         </h2>
-        <div class="grid grid-cols-3 gap-3 mb-4">
+        <div class="grid grid-cols-2 gap-3 mb-4">
           <label class="cursor-pointer">
             <input type="radio" name="input_type" checked class="peer hidden">
             <div class="p-3 text-center border border-slate-700 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-600">
@@ -62,13 +62,6 @@
             <div class="p-3 text-center border border-slate-700 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-600">
               <i class="fa-solid fa-file-video text-lg mb-1 block"></i>
               <span class="text-xs font-medium">Raw Video</span>
-            </div>
-          </label>
-          <label class="cursor-pointer">
-            <input type="radio" name="input_type" class="peer hidden">
-            <div class="p-3 text-center border border-slate-700 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-600">
-              <i class="fa-solid fa-microphone text-lg mb-1 block"></i>
-              <span class="text-xs font-medium">Voiceover Only</span>
             </div>
           </label>
         </div>
@@ -112,18 +105,128 @@
         </div>
       </section>
 
-      <!-- Step 3: AI Effects & Overlay Library -->
+      <!-- Step 3: Format & Voice Configuration -->
+      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur space-y-5">
+        <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
+          <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">3</span>
+          Format, Voice & Caption Settings
+        </h2>
+
+        <!-- Aspect Ratio & Framing -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-2">Aspect Ratio & Framing</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <label class="cursor-pointer">
+              <input type="radio" name="aspect_ratio" checked class="peer hidden">
+              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <i class="fa-solid fa-mobile-screen text-sm mb-1 block"></i>
+                <div class="text-xs font-semibold">9:16 Vertical</div>
+                <div class="text-[10px] text-slate-500">TikTok / Reels / Shorts</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="aspect_ratio" class="peer hidden">
+              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <i class="fa-solid fa-display text-sm mb-1 block"></i>
+                <div class="text-xs font-semibold">16:9 Landscape</div>
+                <div class="text-[10px] text-slate-500">YouTube / Web</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="aspect_ratio" class="peer hidden">
+              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <i class="fa-solid fa-square text-sm mb-1 block"></i>
+                <div class="text-xs font-semibold">1:1 Square</div>
+                <div class="text-[10px] text-slate-500">Instagram / Feed</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="aspect_ratio" class="peer hidden">
+              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <i class="fa-solid fa-crop-simple text-sm mb-1 block"></i>
+                <div class="text-xs font-semibold">4:5 Portrait</div>
+                <div class="text-[10px] text-slate-500">FB / LinkedIn</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Summary Length & Voiceover -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-2">Summary Length & Voiceover Style</label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <label class="cursor-pointer">
+              <input type="radio" name="summary_length" checked class="peer hidden">
+              <div class="p-2.5 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-semibold">⚡ Short Teaser (15–30s)</div>
+                <div class="text-[10px] text-slate-400 mt-1">High-energy narrative voice</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="summary_length" class="peer hidden">
+              <div class="p-2.5 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-semibold">📝 Standard Recap (1–3m)</div>
+                <div class="text-[10px] text-slate-400 mt-1">Professional documentarian tone</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="summary_length" class="peer hidden">
+              <div class="p-2.5 bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-semibold">🎙️ Deep Dive (3–5m)</div>
+                <div class="text-[10px] text-slate-400 mt-1">Conversational commentary voice</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Caption Style (2-3 Words per Line) -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-2">Caption Style (2–3 Words per Line)</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" checked class="peer hidden">
+              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-black uppercase text-amber-300">Bold Pop</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">Yellow & white emphasis</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" class="peer hidden">
+              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-black uppercase text-emerald-400">Hormozi Style</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">Word highlight popups</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" class="peer hidden">
+              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-black uppercase text-pink-400">Pastel Pill</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">Rounded dark backdrop</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="caption_style" class="peer hidden">
+              <div class="p-2.5 text-center bg-slate-950 border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <div class="text-xs font-black uppercase text-cyan-300">Clean Minimal</div>
+                <div class="text-[10px] text-slate-500 mt-0.5">Subtle bottom overlay</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Step 4: AI Effects & Overlay Library -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
-            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">3</span>
+            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">4</span>
             Select Graphic Effects & Overlays
           </h2>
           <button class="text-xs text-indigo-400 hover:underline">Select All AI Recommended</button>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-56 overflow-y-auto pr-1">
-          <!-- Effect Checkboxes -->
           <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
             <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">📄 Doc-Title</span>
@@ -192,10 +295,6 @@
             <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
             <span class="text-slate-300">🔍 Zoom In/Out</span>
           </label>
-          <label class="flex items-center space-x-2 p-2 bg-slate-950 border border-slate-800 rounded-lg text-xs hover:border-slate-700 cursor-pointer">
-            <input type="checkbox" checked class="rounded border-slate-700 text-indigo-600 focus:ring-0 bg-slate-900">
-            <span class="text-slate-300">🎙️ AI Voiceovers</span>
-          </label>
         </div>
       </section>
 
@@ -217,15 +316,14 @@
         </h2>
 
         <div class="relative w-full aspect-[9/16] max-w-[280px] bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden flex flex-col items-center justify-between p-4 shadow-2xl">
-          <!-- Simulated Video Content -->
           <div class="absolute inset-0 bg-gradient-to-b from-indigo-950/40 via-slate-900/80 to-slate-950 flex flex-col items-center justify-center p-6 text-center">
             <div class="w-16 h-16 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-2xl mb-3 animate-pulse">
               <i class="fa-solid fa-play"></i>
             </div>
-            <p class="text-xs text-slate-400">Rendering preview with selected AI motion graphics & captions...</p>
+            <p class="text-xs text-slate-400">Rendering preview with selected ratio, captions, and motion graphics...</p>
           </div>
 
-          <!-- Dynamic Caption Overlay Mockup -->
+          <!-- Dynamic Caption Overlay Mockup (2-3 Words) -->
           <div class="relative z-10 mt-auto bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-center">
             <span class="text-xs font-black text-amber-300 uppercase tracking-wide">FUTURE OF AI</span>
           </div>
