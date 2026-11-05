@@ -85,10 +85,74 @@
         </div>
       </section>
 
-      <!-- Step 2: Edit Style & Workflow -->
+      <!-- Step 2 (NEW): Reference Video "Ingredients" (Style Transfer) -->
+      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
+            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">2</span>
+            Reference Video "Ingredients" (Style Transfer)
+          </h2>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="enable_reference_toggle" class="sr-only peer" onchange="toggleReferenceFeature(this.checked)">
+            <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+          </label>
+        </div>
+
+        <div id="reference_panel_content" class="hidden space-y-4">
+          <p class="text-xs text-slate-400">
+            Upload or paste a target video link. AI will analyze its editing pace, cuts, motion, color grade, and typography to style your raw video.
+          </p>
+
+          <div class="grid grid-cols-2 gap-3">
+            <label class="cursor-pointer">
+              <input type="radio" name="ref_input_type" value="ref_link" checked class="peer hidden" onchange="toggleRefInputType(this.value)">
+              <div class="p-2.5 text-center border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <i class="fa-solid fa-link text-xs mb-1 block"></i>
+                <span class="text-[11px] font-medium">Reference Link</span>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="ref_input_type" value="ref_file" class="peer hidden" onchange="toggleRefInputType(this.value)">
+              <div class="p-2.5 text-center border border-slate-800 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-700">
+                <i class="fa-solid fa-upload text-xs mb-1 block"></i>
+                <span class="text-[11px] font-medium">Upload Reference Clip</span>
+              </div>
+            </label>
+          </div>
+
+          <div id="ref_url_container">
+            <div class="flex space-x-2">
+              <input type="text" id="ref_video_url" placeholder="Paste target YouTube/TikTok style reference link..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 text-slate-200">
+              <button onclick="analyzeReferenceStyle()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-medium transition">
+                Analyze
+              </button>
+            </div>
+          </div>
+
+          <div id="ref_file_container" class="hidden">
+            <input type="file" accept="video/*" onchange="analyzeReferenceFile(event)" class="w-full text-xs text-slate-400 border border-slate-800 rounded-xl px-3 py-1.5 bg-slate-950 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-indigo-600 file:text-white cursor-pointer">
+          </div>
+
+          <!-- Style Ingredients Extracted by AI -->
+          <div id="reference_analysis_result" class="hidden p-3 bg-slate-950 border border-indigo-500/30 rounded-xl space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-indigo-300"><i class="fa-solid fa-microchip mr-1.5"></i>Extracted Style Ingredients</span>
+              <span id="ref_status_badge" class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono">Matched</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-300">
+              <div class="bg-slate-900/80 p-2 rounded-lg"><span class="text-slate-500 block text-[10px]">Pacing & Rhythm:</span> Fast Jump-Cuts (1.2s avg)</div>
+              <div class="bg-slate-900/80 p-2 rounded-lg"><span class="text-slate-500 block text-[10px]">Transitions:</span> Speed Ramps & Whip-Pans</div>
+              <div class="bg-slate-900/80 p-2 rounded-lg"><span class="text-slate-500 block text-[10px]">Color Grading:</span> Cinematic Warm Tone</div>
+              <div class="bg-slate-900/80 p-2 rounded-lg"><span class="text-slate-500 block text-[10px]">Captions Style:</span> Hormozi Pop + Yellow Tint</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3: Edit Style & Workflow -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
         <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center">
-          <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">2</span>
+          <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">3</span>
           Choose Edit Style
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -119,10 +183,10 @@
         </div>
       </section>
 
-      <!-- Step 3: Format, Voice & Caption Customization -->
+      <!-- Step 4: Format, Voice & Caption Customization -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur space-y-5">
         <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
-          <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">3</span>
+          <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">4</span>
           Format, Voice & Caption Settings
         </h2>
 
@@ -410,10 +474,10 @@
 
       </section>
 
-      <!-- Step 4: Logo Watermark, Opacity, Color & Typography -->
+      <!-- Step 5: Logo Watermark, Opacity, Color & Typography -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur space-y-4">
         <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
-          <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">4</span>
+          <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">5</span>
           Logo Watermark & Styling
         </h2>
 
@@ -480,11 +544,11 @@
         </div>
       </section>
 
-      <!-- Step 5: AI Effects & Overlay Library -->
+      <!-- Step 6: AI Effects & Overlay Library -->
       <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center">
-            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">5</span>
+            <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">6</span>
             Select Graphic Effects & Overlays
           </h2>
           <button onclick="selectAllOverlays()" class="text-xs text-indigo-400 hover:underline">Select All AI Recommended</button>
@@ -668,6 +732,7 @@
     let currentStyleName = '⚡ Summarize';
     let logoContentText = 'Logo';
     let logoImageSrc = null;
+    let extractedStyleProfile = null;
 
     function toggleInputType(type) {
       if (type === 'link') {
@@ -677,6 +742,57 @@
         document.getElementById('url_input_container').classList.add('hidden');
         document.getElementById('file_input_container').classList.remove('hidden');
       }
+    }
+
+    function toggleReferenceFeature(enabled) {
+      document.getElementById('reference_panel_content').classList.toggle('hidden', !enabled);
+    }
+
+    function toggleRefInputType(type) {
+      document.getElementById('ref_url_container').classList.toggle('hidden', type !== 'ref_link');
+      document.getElementById('ref_file_container').classList.toggle('hidden', type !== 'ref_file');
+    }
+
+    function analyzeReferenceStyle() {
+      const url = document.getElementById('ref_video_url').value;
+      if (!url) {
+        alert("Please enter a reference video URL first!");
+        return;
+      }
+      runStyleAnalysisSimulation();
+    }
+
+    function analyzeReferenceFile(e) {
+      if (e.target.files.length > 0) {
+        runStyleAnalysisSimulation();
+      }
+    }
+
+    function runStyleAnalysisSimulation() {
+      const resultBox = document.getElementById('reference_analysis_result');
+      const statusBadge = document.getElementById('ref_status_badge');
+
+      resultBox.classList.remove('hidden');
+      statusBadge.className = "text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 font-mono animate-pulse";
+      statusBadge.innerText = "Analyzing Style...";
+
+      setTimeout(() => {
+        extractedStyleProfile = {
+          pacing: "Fast Jump-Cuts (1.2s avg)",
+          transitions: "Speed Ramps & Whip-Pans",
+          colorGrade: "Cinematic Warm Tone",
+          captions: "Hormozi Pop + Yellow Tint"
+        };
+
+        statusBadge.className = "text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono";
+        statusBadge.innerText = "Matched";
+
+        // Auto apply style preset modifications
+        document.getElementById('caption_font_family').value = "'Bebas Neue', sans-serif";
+        document.getElementById('caption_color_picker').value = "#facc15";
+        updateCaptionTypography();
+        updateCaptionColor("#facc15");
+      }, 1500);
     }
 
     function handleFileUpload(event) {
@@ -757,7 +873,6 @@
       document.getElementById('preview_details_text').innerText = `${currentLength} • ${currentTone} Voice`;
     }
 
-    // Direct Manual Caption Editing
     function manualCaptionCorrection(textVal) {
       const txt = document.getElementById('preview_caption_text');
       txt.innerText = textVal;
@@ -765,7 +880,6 @@
     }
 
     function updateCaptionStyle(styleKey) {
-      const txt = document.getElementById('preview_caption_text');
       const box = document.getElementById('preview_caption_box');
       
       if (styleKey === 'none') {
@@ -843,7 +957,6 @@
       captionTxt.style.color = colorHex;
     }
 
-    // Logo Handling & Customizations
     function updateLogoContent() {
       const textVal = document.getElementById('logo_text_input').value;
       logoContentText = textVal ? textVal : 'Logo';
@@ -953,14 +1066,25 @@
     function triggerRenderingAnimation() {
       const statusText = document.getElementById('preview_status_text');
       const icon = document.getElementById('preview_play_icon');
-      
-      statusText.innerText = '⚡ AI Processing Video...';
+      const isRefEnabled = document.getElementById('enable_reference_toggle').checked;
+
+      if (isRefEnabled && !extractedStyleProfile) {
+        alert("Please analyze your reference video style first!");
+        return;
+      }
+
+      if (isRefEnabled) {
+        statusText.innerText = '⚡ Matching Reference & Applying Style Edit...';
+      } else {
+        statusText.innerText = '⚡ AI Processing Video...';
+      }
+
       icon.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
       setTimeout(() => {
         statusText.innerText = '✨ AI Video Render Complete!';
         icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
-      }, 2000);
+      }, 2500);
     }
 
     window.onload = function() {
