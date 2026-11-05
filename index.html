@@ -1112,7 +1112,27 @@
         alert("Please analyze your reference video style first!");
         return;
       }
+try {
+        const response = await fetch('http://127.0.0.1:8000/api/render-video', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: "Trigger render request from GitHub frontend"
+            })
+        });
 
+        const data = await response.json();
+        console.log("Success from backend:", data);
+        
+        if (data.success) {
+            alert("Video render triggered successfully! Output URL: " + data.outputVideoUrl);
+        }
+    } catch (error) {
+        console.error("Connection failed:", error);
+        alert("Could not connect to the local Python backend server. Make sure it is running!");
+    }
       if (isRefEnabled) {
         statusText.innerText = '⚡ Matching Reference & Applying Style Edit...';
       } else {
