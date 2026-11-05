@@ -347,31 +347,63 @@
             </label>
           </div>
 
-          <!-- Custom Caption Typography & Color Controls -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-800/80">
+          <!-- Direct Caption Correction & Typography Customization -->
+          <div class="space-y-3 pt-3 border-t border-slate-800/80">
+            <!-- Edit / Correct Misspelled Caption Input -->
             <div>
-              <label class="block text-[11px] text-slate-400 mb-1">Caption Font Family</label>
-              <select id="caption_font_family" onchange="updateCaptionTypography()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
-                <option value="Inter, sans-serif">Inter (Modern Sans)</option>
-                <option value="'Bebas Neue', sans-serif">Bebas Neue (Condensed Bold)</option>
-                <option value="'Montserrat', sans-serif">Montserrat (Heavy Punchy)</option>
-                <option value="'Playfair Display', serif">Playfair (Cinematic Serif)</option>
-                <option value="'Roboto Mono', monospace">Roboto Mono (Tech / Code)</option>
-              </select>
+              <label class="block text-[11px] text-slate-400 mb-1">
+                <i class="fa-solid fa-pen-to-square text-indigo-400 mr-1"></i>Edit / Correct Live Caption Text
+              </label>
+              <input type="text" id="caption_edit_input" oninput="manualCaptionCorrection(this.value)" value="FUTURE OF AI" placeholder="Type custom caption text..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 font-medium">
             </div>
+
+            <!-- Typography, Weight & Case Controls -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">Font Family</label>
+                <select id="caption_font_family" onchange="updateCaptionTypography()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                  <option value="Inter, sans-serif">Inter</option>
+                  <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
+                  <option value="'Montserrat', sans-serif">Montserrat</option>
+                  <option value="'Playfair Display', serif">Playfair Serif</option>
+                  <option value="'Roboto Mono', monospace">Roboto Mono</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">Text Case</label>
+                <select id="caption_case_select" onchange="updateCaptionTypography()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                  <option value="uppercase">UPPERCASE</option>
+                  <option value="lowercase">lowercase</option>
+                  <option value="capitalize">Sentence / Capitalize</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">Font Weight</label>
+                <select id="caption_weight_select" onchange="updateCaptionTypography()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                  <option value="900">Heavy / Black</option>
+                  <option value="700">Bold</option>
+                  <option value="400">Normal / Regular</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">Text Color</label>
+                <div class="flex items-center space-x-2">
+                  <input type="color" id="caption_color_picker" value="#ffffff" onchange="updateCaptionColor(this.value)" class="w-7 h-7 bg-slate-950 border border-slate-800 rounded cursor-pointer">
+                  <span class="text-[10px] text-slate-400">Tint</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Size Slider -->
             <div>
               <div class="flex items-center justify-between mb-1">
                 <label class="text-[11px] text-slate-400">Caption Font Size</label>
                 <span id="caption_size_val" class="text-[10px] text-indigo-400 font-mono">14px</span>
               </div>
               <input type="range" id="caption_size_slider" min="10" max="24" value="14" oninput="updateCaptionTypography()" class="w-full accent-indigo-500 cursor-pointer">
-            </div>
-            <div>
-              <label class="block text-[11px] text-slate-400 mb-1">Caption Text Color</label>
-              <div class="flex items-center space-x-2">
-                <input type="color" id="caption_color_picker" value="#ffffff" onchange="updateCaptionColor(this.value)" class="w-8 h-7 bg-slate-950 border border-slate-800 rounded cursor-pointer">
-                <span class="text-[10px] text-slate-400">Custom Tint</span>
-              </div>
             </div>
           </div>
         </div>
@@ -677,7 +709,8 @@
       event.currentTarget.classList.remove('border-slate-800', 'bg-slate-950');
       event.currentTarget.classList.add('border-indigo-500', 'bg-indigo-500/10');
       
-      document.getElementById('preview_caption_text').innerText = styleKeyword.toUpperCase();
+      document.getElementById('caption_edit_input').value = styleKeyword;
+      manualCaptionCorrection(styleKeyword);
     }
 
     function updateAspectRatio(ratio) {
@@ -724,6 +757,13 @@
       document.getElementById('preview_details_text').innerText = `${currentLength} • ${currentTone} Voice`;
     }
 
+    // Direct Manual Caption Editing
+    function manualCaptionCorrection(textVal) {
+      const txt = document.getElementById('preview_caption_text');
+      txt.innerText = textVal;
+      updateCaptionTypography();
+    }
+
     function updateCaptionStyle(styleKey) {
       const txt = document.getElementById('preview_caption_text');
       const box = document.getElementById('preview_caption_box');
@@ -735,38 +775,67 @@
         box.classList.remove('hidden');
       }
 
-      const currentSize = document.getElementById('caption_size_slider').value;
-      const currentFont = document.getElementById('caption_font_family').value;
-      const customColor = document.getElementById('caption_color_picker').value;
-
-      txt.className = "drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] ";
-      txt.style.fontSize = currentSize + 'px';
-      txt.style.fontFamily = currentFont;
-      txt.style.color = customColor;
-
       switch(styleKey) {
-        case 'bold-shadow': txt.className += "font-bold tracking-wide"; break;
-        case 'bold-highlight': txt.className += "font-bold tracking-wide"; break;
-        case 'plain-white': txt.className += "font-normal"; break;
-        case 'hormozi': txt.className += "font-black uppercase tracking-wider"; break;
-        case 'neon': txt.className += "font-black tracking-wider"; break;
-        case 'pastel': txt.className += "font-bold tracking-wide"; break;
-        case 'yellow': txt.className += "font-extrabold tracking-wide"; break;
-        case 'underline': txt.className += "font-semibold underline decoration-indigo-500 decoration-2"; break;
-        case 'minimal': txt.className += "font-black uppercase tracking-widest"; break;
-        case 'cinematic': txt.className += "font-light italic tracking-wide"; break;
+        case 'bold-shadow': 
+          document.getElementById('caption_weight_select').value = "700";
+          document.getElementById('caption_color_picker').value = "#ffffff";
+          break;
+        case 'bold-highlight': 
+          document.getElementById('caption_weight_select').value = "700";
+          document.getElementById('caption_color_picker').value = "#fde047";
+          break;
+        case 'plain-white': 
+          document.getElementById('caption_weight_select').value = "400";
+          document.getElementById('caption_color_picker').value = "#ffffff";
+          break;
+        case 'hormozi': 
+          document.getElementById('caption_weight_select').value = "900";
+          document.getElementById('caption_case_select').value = "uppercase";
+          document.getElementById('caption_color_picker').value = "#34d399";
+          break;
+        case 'neon': 
+          document.getElementById('caption_weight_select').value = "900";
+          document.getElementById('caption_color_picker').value = "#67e8f9";
+          break;
+        case 'pastel': 
+          document.getElementById('caption_color_picker').value = "#f472b6";
+          break;
+        case 'yellow': 
+          document.getElementById('caption_weight_select').value = "900";
+          document.getElementById('caption_color_picker').value = "#fbbf24";
+          break;
+        case 'underline': 
+          document.getElementById('caption_color_picker').value = "#e2e8f0";
+          break;
+        case 'minimal': 
+          document.getElementById('caption_weight_select').value = "900";
+          document.getElementById('caption_case_select').value = "uppercase";
+          document.getElementById('caption_color_picker').value = "#fda4af";
+          break;
+        case 'cinematic': 
+          document.getElementById('caption_weight_select').value = "400";
+          document.getElementById('caption_case_select').value = "capitalize";
+          document.getElementById('caption_color_picker').value = "#f8fafc";
+          break;
       }
+      updateCaptionTypography();
     }
 
     function updateCaptionTypography() {
       const font = document.getElementById('caption_font_family').value;
       const size = document.getElementById('caption_size_slider').value;
+      const caseVal = document.getElementById('caption_case_select').value;
+      const weightVal = document.getElementById('caption_weight_select').value;
+      const customColor = document.getElementById('caption_color_picker').value;
       
       document.getElementById('caption_size_val').innerText = size + 'px';
       
       const captionTxt = document.getElementById('preview_caption_text');
       captionTxt.style.fontFamily = font;
       captionTxt.style.fontSize = size + 'px';
+      captionTxt.style.textTransform = caseVal;
+      captionTxt.style.fontWeight = weightVal;
+      captionTxt.style.color = customColor;
     }
 
     function updateCaptionColor(colorHex) {
@@ -774,7 +843,7 @@
       captionTxt.style.color = colorHex;
     }
 
-    // Logo Handling & Customizations (Opacity, Size, Font Style, Color)
+    // Logo Handling & Customizations
     function updateLogoContent() {
       const textVal = document.getElementById('logo_text_input').value;
       logoContentText = textVal ? textVal : 'Logo';
