@@ -21,8 +21,9 @@ app.add_middleware(
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 @app.get("/")
+@app.get("/index.html")
 def read_index():
-    print("Serving index.html to client")
+    print("ROUTE HIT: Serving index.html from:", os.path.join(BASE_DIR, "index.html"))
     return FileResponse(os.path.join(BASE_DIR, "index.html"))
 
 @app.post("/api/render-video")
