@@ -1183,21 +1183,42 @@ try {
         const loadPreviewBtn = document.getElementById('loadPreviewBtn');
 
         if (loadPreviewBtn) {
-            loadPreviewBtn.addEventListener('click', () => {
-                const fileContainer = document.getElementById('file_input_container');
-                const isFileActive = fileContainer && !fileContainer.classList.contains('hidden');
+loadPreviewBtn.addEventListener('click', async () => {
+            const fileContainer = document.getElementById('file_input_container');
+            const isFileActive = fileContainer && !fileContainer.classList.contains('hidden');
 
-                if (isFileActive && fileInput.files && fileInput.files[0]) {
-                    const fileURL = URL.createObjectURL(fileInput.files[0]);
-                    videoPreview.src = fileURL;
-                    videoPreview.load();
-                } else if (urlInput && urlInput.value.trim() !== "") {
-                    videoPreview.src = urlInput.value.trim();
-                    videoPreview.load();
-                } else {
-                    alert("Please provide a video file or URL first!");
+            if (isFileActive && fileInput.files && fileInput.files[0]) {
+                const fileURL = URL.createObjectURL(fileInput.files[0]);
+                videoPreview.src = fileURL;
+                videoPreview.load();
+            } else if (urlInput && urlInput.value.trim() !== "") {
+                const targetUrl = urlInput.value.trim();
+                loadPreviewBtn.textContent = "Extracting Stream...";
+                
+                try {
+                    const response = await fetch('/extract-video', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url: targetUrl })
+                    });
+                    const data = await response.json();
+                    
+                    if (data.success && data.stream_url) {
+                        videoPreview.src = data.stream_url;
+                        videoPreview.load();
+                    } else {
+                        alert("Could not load stream from this link.");
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("Error connecting to backend extraction service.");
+                } finally {
+                    loadPreviewBtn.textContent = "Load Preview";
                 }
-            });
+            } else {
+                alert("Please provide a video file or URL first!");
+            }
+        });
         }
     };
 </script>
