@@ -16,8 +16,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Add this root route right here:
+@app.get("/")
+def read_index():
+    return FileResponse("index.html")
+
 @app.post("/api/render-video")
 async def render_video(payload: dict):
+    ...
     print("Received render request from frontend:", payload)
     
     video_input = payload.get("videoUrl") or payload.get("url")
