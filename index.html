@@ -1119,7 +1119,7 @@ try {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-            videoUrl: document.querySelector('input[type="text"], input[type="url"]') ? document.querySelector('input[type="text"], input[type="url"]').value : "https://www.youtube.com/watch?v=BaW_jenozKc",
+            videoUrl: (document.getElementById('video_file_input')?.files?.[0]) ? document.getElementById('video_file_input').files[0].name : (document.querySelector('input[type="text"], input[type="url"]') ? document.querySelector('input[type="text"], input[type="url"]').value : null),
             referenceUrl: document.getElementById('reference_url_input') ? document.getElementById('reference_url_input').value : null,
             selectedStyle: typeof currentStyleName !== 'undefined' ? currentStyleName : "Summarize"
         })
