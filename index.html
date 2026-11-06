@@ -1130,6 +1130,15 @@ try {
         
         if (data.success) {
             alert("Video render triggered successfully! Output URL: " + data.outputVideoUrl);
+            
+            // --- Insert this part right here ---
+            const previewVideo = document.getElementById('preview_video_element');
+            if (previewVideo) {
+                previewVideo.src = data.outputVideoUrl;
+                previewVideo.classList.remove('hidden');
+                previewVideo.load();
+                previewVideo.play();
+            }
         }
     } catch (error) {
         console.error("Connection failed:", error);
