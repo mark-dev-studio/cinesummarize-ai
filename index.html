@@ -1136,7 +1136,7 @@ try {
             const placeholderBg = document.getElementById('preview_placeholder_bg');
             
             if (previewVideo) {
-                previewVideo.src = data.outputVideoUrl;
+                previewVideo.src = "http://localhost:8000/" + data.outputVideoUrl;
                 previewVideo.classList.remove('hidden');
                 if (placeholderBg) placeholderBg.classList.add('hidden');
                 previewVideo.load();
