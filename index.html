@@ -1131,11 +1131,14 @@ try {
         if (data.success) {
             alert("Video render triggered successfully! Output URL: " + data.outputVideoUrl);
             
-            // --- Insert this part right here ---
+            // --- Add these lines to display the video ---
             const previewVideo = document.getElementById('preview_video_element');
+            const placeholderBg = document.getElementById('preview_placeholder_bg');
+            
             if (previewVideo) {
                 previewVideo.src = data.outputVideoUrl;
                 previewVideo.classList.remove('hidden');
+                if (placeholderBg) placeholderBg.classList.add('hidden');
                 previewVideo.load();
                 previewVideo.play();
             }
