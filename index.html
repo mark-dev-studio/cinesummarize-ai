@@ -54,29 +54,30 @@
     <!-- Left Controls Panel (Independent Scrolling) -->
     <div class="lg:col-span-7 space-y-6 overflow-y-auto pr-2 h-[calc(100vh-100px)] pb-12">
 
-      <!-- Step 1: Media Input Source -->
-      <section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur">
-        <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center">
-          <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">1</span>
-          Select Source Input
-        </h2>
-        <div class="grid grid-cols-2 gap-3 mb-4">
-          <label class="cursor-pointer">
+<!-- Step 1: Media Input Source -->
+<section class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 backdrop-blur mb-6">
+    <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center">
+        <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs mr-2">1</span>
+        Select Source Input
+    </h2>
+    <div class="grid grid-cols-2 gap-3 mb-4">
+        <label class="cursor-pointer">
             <input type="radio" name="input_type" value="link" checked class="peer hidden" onchange="toggleInputType(this.value)">
             <div class="p-3 text-center border border-slate-700 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-600">
-              <i class="fa-solid fa-link text-lg mb-1 block"></i>
-              <span class="text-xs font-medium">Video Link</span>
+                <i class="fa-solid fa-link text-lg mb-1 block"></i>
+                <span class="text-xs font-medium">Video Link</span>
             </div>
-          </label>
-          <label class="cursor-pointer">
+        </label>
+        <label class="cursor-pointer">
             <input type="radio" name="input_type" value="file" class="peer hidden" onchange="toggleInputType(this.value)">
             <div class="p-3 text-center border border-slate-700 rounded-xl peer-checked:border-indigo-500 peer-checked:bg-indigo-500/10 peer-checked:text-indigo-300 hover:border-slate-600">
-              <i class="fa-solid fa-file-video text-lg mb-1 block"></i>
-              <span class="text-xs font-medium">Raw Video</span>
+                <i class="fa-solid fa-file-video text-lg mb-1 block"></i>
+                <span class="text-xs font-medium">Raw Video</span>
             </div>
-          </label>
-        </div>
-        <!-- Input Containers -->
+        </label>
+    </div>
+
+    <!-- Input Containers -->
     <div id="url_input_container" class="mb-4">
         <input type="text" id="video_url_input" placeholder="Paste YouTube, TikTok, or video URL..." class="w-full p-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm">
     </div>
@@ -85,7 +86,8 @@
         <input type="file" id="video_file_input" accept="video/*,audio/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500">
     </div>
 
-    <button id="loadPreviewBtn" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium text-sm mb-4">Load Preview</button>
+    <!-- Load Preview Button -->
+    <button id="loadPreviewBtn" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium text-sm transition">Load Preview</button>
 </section>
       
     <!-- Live AI Preview Player -->
@@ -1168,47 +1170,36 @@ try {
         icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
       }, 2500);
     }
-window.onload = function() {
-            updateGraphicTags();
-            renderLogoVisual();
-            updateCaptionTypography();
+<script>
+    window.onload = function() {
+        updateGraphicTags();
+        renderLogoVisual();
+        updateCaptionTypography();
 
-            // --- Live AI Preview Button Logic ---
-            const urlInput = document.getElementById('video_url_input');
-            const fileInput = document.getElementById('video_file_input');
-            const videoPreview = document.getElementById('liveVideoPreview');
-            const loadPreviewBtn = document.getElementById('loadPreviewBtn');
+        // --- Live AI Preview Button Logic ---
+        const urlInput = document.getElementById('video_url_input');
+        const fileInput = document.getElementById('video_file_input');
+        const videoPreview = document.getElementById('liveVideoPreview');
+        const loadPreviewBtn = document.getElementById('loadPreviewBtn');
 
-            if (loadPreviewBtn) {
-                loadPreviewBtn.addEventListener('click', () => {
-                    const fileContainer = document.getElementById('file_input_container');
-                    const isFileActive = fileContainer && !fileContainer.classList.contains('hidden');
+        if (loadPreviewBtn) {
+            loadPreviewBtn.addEventListener('click', () => {
+                const fileContainer = document.getElementById('file_input_container');
+                const isFileActive = fileContainer && !fileContainer.classList.contains('hidden');
 
-                    if (isFileActive && fileInput.files && fileInput.files[0]) {
-                        const fileURL = URL.createObjectURL(fileInput.files[0]);
-                        videoPreview.src = fileURL;
-                        videoPreview.load();
-                    } else if (urlInput && urlInput.value.trim() !== "") {
-                        videoPreview.src = urlInput.value.trim();
-                        videoPreview.load();
-                    } else {
-                        alert("Please provide a video file or URL first!");
-                    }
-                });
-            }
-        };
-    </script>
-        if (isFileActive && fileInput.files && fileInput.files[0]) {
-            const fileURL = URL.createObjectURL(fileInput.files[0]);
-            videoPreview.src = fileURL;
-            videoPreview.load();
-        } else if (urlInput && urlInput.value.trim() !== "") {
-            videoPreview.src = urlInput.value.trim();
-            videoPreview.load();
-        } else {
-            alert("Please provide a video file or URL first!");
+                if (isFileActive && fileInput.files && fileInput.files[0]) {
+                    const fileURL = URL.createObjectURL(fileInput.files[0]);
+                    videoPreview.src = fileURL;
+                    videoPreview.load();
+                } else if (urlInput && urlInput.value.trim() !== "") {
+                    videoPreview.src = urlInput.value.trim();
+                    videoPreview.load();
+                } else {
+                    alert("Please provide a video file or URL first!");
+                }
+            });
         }
-    });
+    };
 </script>
 
 </body>
