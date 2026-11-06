@@ -20,11 +20,17 @@ app.add_middleware(
 # 2. Define your base directory here
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-@app.get("/")
-@app.get("/index.html")
+from fastapi.responses import HTMLResponse
+
+@app.get("/", response_class=HTMLResponse)
+@app.get("/index.html", response_class=HTMLResponse)
 def read_index():
-    print("ROUTE HIT: Serving index.html from:", os.path.join(BASE_DIR, "index.html"))
-    return FileResponse(os.path.join(BASE_DIR, "index.html"))
+    print("ROUTE HIT: Successfully reached root URL!")
+    html_path = os.path.join(BASE_DIR, "index.html")
+    if os.path.exists(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            return f.read()
+    return f"Error: index.html not found at {html_path}", 404
 
 @app.post("/api/render-video")
 async def render_video(payload: dict):
