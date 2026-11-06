@@ -1184,7 +1184,8 @@ try {
 
         if (loadPreviewBtn) {
 loadPreviewBtn.addEventListener('click', async () => {
-            const fileContainer = document.getElementById('file_input_container');
+    console.log("Button clicked and working!"); 
+    const fileContainer = document.getElementById('file_input_container');
             const isFileActive = fileContainer && !fileContainer.classList.contains('hidden');
 
             if (isFileActive && fileInput.files && fileInput.files[0]) {
