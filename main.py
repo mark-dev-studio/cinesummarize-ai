@@ -34,6 +34,7 @@ def read_index():
     return f"Error: index.html not found at {html_path}", 404
 
 @app.post("/api/render-video")
+@app.post("/api/render-video/")
 async def render_video(payload: dict):
     print("Received render request from frontend:", payload)
     # ... rest of your code ...
