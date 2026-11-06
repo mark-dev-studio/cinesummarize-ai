@@ -1156,10 +1156,10 @@ try {
                 previewVideo.play();
             }
         }
-    } catch (error) {
-        console.error("Connection failed:", error);
-        alert("Could not connect to the local Python backend server. Make sure it is running!");
-    }
+} catch (error) {
+    console.error("Connection failed details:", error);
+    alert("Fetch failed: " + error.message);
+}
       if (isRefEnabled) {
         statusText.innerText = '⚡ Matching Reference & Applying Style Edit...';
       } else {
