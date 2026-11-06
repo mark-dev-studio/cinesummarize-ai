@@ -1119,7 +1119,9 @@ try {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-            videoUrl: document.querySelector('input[type="text"], input[type="url"]') ? document.querySelector('input[type="text"], input[type="url"]').value : "https://www.youtube.com/watch?v=BaW_jenozKc"
+            videoUrl: document.querySelector('input[type="text"], input[type="url"]') ? document.querySelector('input[type="text"], input[type="url"]').value : "https://www.youtube.com/watch?v=BaW_jenozKc",
+            referenceUrl: document.getElementById('reference_url_input') ? document.getElementById('reference_url_input').value : null,
+            selectedStyle: typeof currentStyleName !== 'undefined' ? currentStyleName : "Summarize"
         })
         });
 
