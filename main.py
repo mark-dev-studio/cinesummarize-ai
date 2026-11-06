@@ -127,11 +127,5 @@ async def render_video(payload: dict):
 
 app.mount("/", StaticFiles(directory="."), name="static")
 
-from fastapi.responses import FileResponse
-
-@app.get("/")
-async def serve_frontend():
-    return FileResponse("index.html")
-
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
