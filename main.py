@@ -126,7 +126,7 @@ async def render_video(payload: dict):
     	print(f"Processing error: {e.stderr}")
     	raise HTTPException(status_code=500, detail=f"Failed to process stream: {e.stderr}")
 
-app.mount("/", StaticFiles(directory="."), name="static")
+# app.mount("/", StaticFiles(directory="."), name="static")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
