@@ -1,6 +1,7 @@
 import sys
 import subprocess
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles  # <--- Put this import here at the top
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
