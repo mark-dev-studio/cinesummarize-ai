@@ -1168,25 +1168,36 @@ try {
         icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
       }, 2500);
     }
+window.onload = function() {
+            updateGraphicTags();
+            renderLogoVisual();
+            updateCaptionTypography();
 
-    window.onload = function() {
-      updateGraphicTags();
-      renderLogoVisual();
-      updateCaptionTypography();
-    };
-</script>
+            // --- Live AI Preview Button Logic ---
+            const urlInput = document.getElementById('video_url_input');
+            const fileInput = document.getElementById('video_file_input');
+            const videoPreview = document.getElementById('liveVideoPreview');
+            const loadPreviewBtn = document.getElementById('loadPreviewBtn');
 
-<!-- Add your new preview listener script right here -->
-<script>
-    const urlInput = document.getElementById('video_url_input');
-    const fileInput = document.getElementById('video_file_input');
-    const videoPreview = document.getElementById('liveVideoPreview');
-    const loadPreviewBtn = document.getElementById('loadPreviewBtn');
+            if (loadPreviewBtn) {
+                loadPreviewBtn.addEventListener('click', () => {
+                    const fileContainer = document.getElementById('file_input_container');
+                    const isFileActive = fileContainer && !fileContainer.classList.contains('hidden');
 
-    loadPreviewBtn.addEventListener('click', () => {
-        const fileContainer = document.getElementById('file_input_container');
-        const isFileActive = fileContainer && !fileContainer.classList.contains('hidden');
-
+                    if (isFileActive && fileInput.files && fileInput.files[0]) {
+                        const fileURL = URL.createObjectURL(fileInput.files[0]);
+                        videoPreview.src = fileURL;
+                        videoPreview.load();
+                    } else if (urlInput && urlInput.value.trim() !== "") {
+                        videoPreview.src = urlInput.value.trim();
+                        videoPreview.load();
+                    } else {
+                        alert("Please provide a video file or URL first!");
+                    }
+                });
+            }
+        };
+    </script>
         if (isFileActive && fileInput.files && fileInput.files[0]) {
             const fileURL = URL.createObjectURL(fileInput.files[0]);
             videoPreview.src = fileURL;
