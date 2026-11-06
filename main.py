@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 @app.get("/")
 def read_index():
-    # 3. Use the absolute path to index.html
+    print("Serving index.html to client")
     return FileResponse(os.path.join(BASE_DIR, "index.html"))
 
 @app.post("/api/render-video")
