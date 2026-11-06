@@ -37,8 +37,6 @@ def read_index():
 @app.post("/api/render-video/")
 async def render_video(payload: dict):
     print("Received render request from frontend:", payload)
-    # ... rest of your code ...
-    print("Received render request from frontend:", payload)
     
     video_input = payload.get("videoUrl") or payload.get("url")
     reference_url = payload.get("referenceUrl")
@@ -126,6 +124,7 @@ async def render_video(payload: dict):
     	print(f"Processing error: {e.stderr}")
     	raise HTTPException(status_code=500, detail=f"Failed to process stream: {e.stderr}")
 
+# Comment out this line completely:
 # app.mount("/", StaticFiles(directory="."), name="static")
 
 if __name__ == "__main__":
