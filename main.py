@@ -1,3 +1,4 @@
+print(">>> CURRENTLY RUNNING FILE:", __file__)
 import sys
 import subprocess
 import os  # <-- 1. Add 'import os' here at the top
