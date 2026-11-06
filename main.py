@@ -1,8 +1,9 @@
 import sys
 import subprocess
+import os  # <-- 1. Add 'import os' here at the top
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles  # <--- Put this import here at the top
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -16,14 +17,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Add this root route right here:
+# 2. Define your base directory here
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 @app.get("/")
 def read_index():
-    return FileResponse("index.html")
+    # 3. Use the absolute path to index.html
+    return FileResponse(os.path.join(BASE_DIR, "index.html"))
 
 @app.post("/api/render-video")
 async def render_video(payload: dict):
-    ...
+    print("Received render request from frontend:", payload)
+    # ... rest of your code ...
     print("Received render request from frontend:", payload)
     
     video_input = payload.get("videoUrl") or payload.get("url")
